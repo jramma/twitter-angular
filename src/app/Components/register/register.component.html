@@ -47,7 +47,7 @@
 
       <div>
         <label for="birth_date" class="block text-sm font-medium text-gray-700">Birth Date</label>
-        <input id="birth_date" formControlName="birth_date" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <input id="birth_date" formControlName="birth_date" type="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
         <div *ngIf="registerForm.get('birth_date')?.invalid && registerForm.get('birth_date')?.touched" class="text-red-500 text-sm mt-1">
           <small *ngIf="registerForm.get('birth_date')?.errors?.required">Birth Date is required.</small>
           <small *ngIf="registerForm.get('birth_date')?.errors?.pattern">Birth Date must be in the format yyyy-mm-dd.</small>

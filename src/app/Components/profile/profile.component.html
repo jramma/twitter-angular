@@ -1,8 +1,211 @@
-<div style="margin-left: auto; margin-right: auto">
-  <p id="profileFeedback"></p>
-</div>
-<div>
-  <h1>Profile</h1>
+<section class="container">
+  <div style="margin-left: auto; margin-right: auto">
+    <p id="profileFeedback" class="text-red-500"></p>
+  </div>
+  <div class="w-full max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold text-center mb-4">Profile</h1>
 
-  <!-- TODO 6 -->
-</div>
+    <form [formGroup]="profileForm" (ngSubmit)="updateUser()" class="space-y-4">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700"
+          >Name</label
+        >
+        <input
+          id="name"
+          formControlName="name"
+          type="text"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('name')?.invalid && profileForm.get('name')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('name')?.errors?.required"
+            >Name is required.</small
+          >
+          <small *ngIf="profileForm.get('name')?.errors?.minlength"
+            >Name must be at least 5 characters long.</small
+          >
+          <small *ngIf="profileForm.get('name')?.errors?.maxlength"
+            >Name cannot be more than 25 characters long.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="surname_1" class="block text-sm font-medium text-gray-700"
+          >First Surname</label
+        >
+        <input
+          id="surname_1"
+          formControlName="surname_1"
+          type="text"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('surname_1')?.invalid &&
+            profileForm.get('surname_1')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('surname_1')?.errors?.required"
+            >First Surname is required.</small
+          >
+          <small *ngIf="profileForm.get('surname_1')?.errors?.minlength"
+            >First Surname must be at least 5 characters long.</small
+          >
+          <small *ngIf="profileForm.get('surname_1')?.errors?.maxlength"
+            >First Surname cannot be more than 25 characters long.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="surname_2" class="block text-sm font-medium text-gray-700"
+          >Second Surname</label
+        >
+        <input
+          id="surname_2"
+          formControlName="surname_2"
+          type="text"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('surname_2')?.invalid &&
+            profileForm.get('surname_2')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('surname_2')?.errors?.minlength"
+            >Second Surname must be at least 5 characters long.</small
+          >
+          <small *ngIf="profileForm.get('surname_2')?.errors?.maxlength"
+            >Second Surname cannot be more than 25 characters long.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="alias" class="block text-sm font-medium text-gray-700"
+          >Alias</label
+        >
+        <input
+          id="alias"
+          formControlName="alias"
+          type="text"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('alias')?.invalid &&
+            profileForm.get('alias')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('alias')?.errors?.required"
+            >Alias is required.</small
+          >
+          <small *ngIf="profileForm.get('alias')?.errors?.minlength"
+            >Alias must be at least 5 characters long.</small
+          >
+          <small *ngIf="profileForm.get('alias')?.errors?.maxlength"
+            >Alias cannot be more than 25 characters long.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="birth_date" class="block text-sm font-medium text-gray-700"
+          >Birth Date</label
+        >
+        <input
+          id="birth_date"
+          formControlName="birth_date"
+          type="date"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('birth_date')?.invalid &&
+            profileForm.get('birth_date')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('birth_date')?.errors?.required"
+            >Birth Date is required.</small
+          >
+          <small *ngIf="profileForm.get('birth_date')?.errors?.pattern"
+            >Birth Date must be in the format yyyy-mm-dd.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >Email</label
+        >
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('email')?.invalid &&
+            profileForm.get('email')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('email')?.errors?.required"
+            >Email is required.</small
+          >
+          <small *ngIf="profileForm.get('email')?.errors?.email"
+            >Email must be a valid email address.</small
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700"
+          >Password</label
+        >
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <div
+          *ngIf="
+            profileForm.get('password')?.invalid &&
+            profileForm.get('password')?.touched
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          <small *ngIf="profileForm.get('password')?.errors?.required"
+            >Password is required.</small
+          >
+          <small *ngIf="profileForm.get('password')?.errors?.minlength"
+            >Password must be at least 8 characters long.</small
+          >
+          <small *ngIf="profileForm.get('password')?.errors?.maxlength"
+            >Password cannot be more than 16 characters long.</small
+          >
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="profileForm.invalid"
+        class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      >
+        Update Profile
+      </button>
+    </form>
+  </div>
+</section>
