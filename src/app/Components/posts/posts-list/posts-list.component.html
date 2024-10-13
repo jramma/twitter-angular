@@ -1,3 +1,46 @@
-<h2>Post List</h2>
+<div class="container">
+  <h2 class="text-2xl font-bold mb-4">Post List</h2>
 
-<!-- TODO 11 -->
+  <button
+    (click)="createPost()"
+    class="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+  >
+    ADD POST
+  </button>
+
+  <table class="w-full bg-white border border-gray-200">
+    <thead>
+      <tr>
+        <th class="py-2 px-4 border-b">ID</th>
+        <th class="py-2 px-4 border-b">Title</th>
+        <th class="py-2 px-4 border-b">Description</th>
+        <th class="py-2 px-4 border-b">Likes</th>
+        <th class="py-2 px-4 border-b">Dislikes</th>
+        <th class="py-2 px-4 border-b">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let post of posts" class="hover:bg-gray-100">
+        <td class="py-2 px-4 border-b">{{ post.postId }}</td>
+        <td class="py-2 px-4 border-b">{{ post.title }}</td>
+        <td class="py-2 px-4 border-b">{{ post.description }}</td>
+        <td class="py-2 px-4 border-b">{{ post.num_likes }}</td>
+        <td class="py-2 px-4 border-b">{{ post.num_dislikes }}</td>
+        <td class="py-2 px-4 border-b">
+          <button
+            (click)="updatePost(post.postId)"
+            class="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+          >
+            UPDATE
+          </button>
+          <button
+            (click)="deletePost(post.postId)"
+            class="bg-red-500 text-white px-2 py-1 rounded"
+          >
+            DELETE
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

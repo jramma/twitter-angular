@@ -1,26 +1,55 @@
-<h2>Categories List</h2>
-<button (click)="createCategory()">ADD</button>
+<section class="container  p-4">
+  <h2 class="text-2xl font-bold mb-4">Categories List</h2>
+  <button
+    (click)="createCategory()"
+    class="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+  >
+    ADD
+  </button>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>TITLE</th>
-      <th>DESCRIPTION</th>
-      <th>CSS COLOR</th>
-      <th>ACTIONS</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let category of categories">
-      <td>{{ category.categoryId }}</td>
-      <td>{{ category.title }}</td>
-      <td>{{ category.description }}</td>
-      <td>{{ category.css_color }}</td>
-      <td>
-        <button (click)="updateCategory(category.categoryId)">UPDATE</button>
-        <button (click)="deleteCategory(category.categoryId)">DELETE</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-300">
+      <thead>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left">ID</th>
+          <th class="py-3 px-6 text-left">TITLE</th>
+          <th class="py-3 px-6 text-left">DESCRIPTION</th>
+          <th class="py-3 px-6 text-left">CSS COLOR</th>
+          <th class="py-3 px-6 text-left">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm font-light">
+        <tr
+          *ngFor="let category of categories"
+          class="border-b border-gray-200 hover:bg-gray-100"
+        >
+          <td class="py-3 px-6 text-left whitespace-nowrap">
+            {{ category.categoryId }}
+          </td>
+          <td class="py-3 px-6 text-left">{{ category.title }}</td>
+          <td class="py-3 px-6 text-left">{{ category.description }}</td>
+          <td class="py-3 px-6 text-left">
+            <span
+              class="inline-block w-4 h-4 rounded-full"
+              [ngStyle]="{ 'background-color': category.css_color }"
+            ></span>
+          </td>
+          <td class="py-3 px-6 text-left">
+            <button
+              (click)="updateCategory(category.categoryId)"
+              class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-700 mr-2"
+            >
+              UPDATE
+            </button>
+            <button
+              (click)="deleteCategory(category.categoryId)"
+              class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
+            >
+              DELETE
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

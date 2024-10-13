@@ -2,5 +2,129 @@
   <p id="postFeedback"></p>
 </div>
 <div>
-  <!-- TODO 14 -->
+  <form [formGroup]="postForm" (ngSubmit)="savePost()">
+    <div class="mb-4">
+      <label for="title" class="block text-gray-700">Title</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+      />
+      <div
+        *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched"
+        class="text-red-500"
+      >
+        <small *ngIf="postForm.get('title')?.errors?.required"
+          >Title is required.</small
+        >
+        <small *ngIf="postForm.get('title')?.errors?.maxlength"
+          >Title cannot exceed 55 characters.</small
+        >
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="description" class="block text-gray-700">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+      ></textarea>
+      <div
+        *ngIf="
+          postForm.get('description')?.invalid &&
+          postForm.get('description')?.touched
+        "
+        class="text-red-500"
+      >
+        <small *ngIf="postForm.get('description')?.errors?.required"
+          >Description is required.</small
+        >
+        <small *ngIf="postForm.get('description')?.errors?.maxlength"
+          >Description cannot exceed 255 characters.</small
+        >
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="publication_date" class="block text-gray-700"
+        >Publication Date</label
+      >
+      <input
+        id="publication_date"
+        type="date"
+        formControlName="publication_date"
+        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+      />
+      <div
+        *ngIf="
+          postForm.get('publication_date')?.invalid &&
+          postForm.get('publication_date')?.touched
+        "
+        class="text-red-500"
+      >
+        <small *ngIf="postForm.get('publication_date')?.errors?.required"
+          >Publication date is required.</small
+        >
+        <small *ngIf="postForm.get('publication_date')?.errors?.pattern"
+          >Invalid date format. Use yyyy-mm-dd.</small
+        >
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="categories" class="block text-gray-700">Categories</label>
+      <select
+        id="categories"
+        formControlName="categories"
+        multiple
+        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+      >
+        <option *ngFor="let category of categories" [value]="category.categoryId">
+          {{ category.title }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          postForm.get('categories')?.invalid &&
+          postForm.get('categories')?.touched
+        "
+        class="text-red-500"
+      >
+        <small *ngIf="postForm.get('categories')?.errors?.required">
+          At least one category is required.
+        </small>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="newCategory" class="block text-gray-700"
+        >Add New Category</label
+      >
+      <input
+        id="newCategory"
+        type="text"
+        formControlName="newCategoryName"
+        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+      />
+      <button
+        type="button"
+        (click)="addCategory()"
+        class="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Add Category
+      </button>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        class="bg-blue-500 text-white px-4 py-2 rounded"
+        [disabled]="postForm.invalid"
+      >
+        Save Post
+      </button>
+    </div>
+  </form>
 </div>
