@@ -1,8 +1,79 @@
-<div style="margin-left: auto; margin-right: auto">
-  <p id="registerFeedback"></p>
-</div>
-<div>
-  <h1>Register</h1>
+<section class="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+  <div class="w-full max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <div class="mb-4 text-center">
+      <h1 class="text-2xl font-bold">Register</h1>
+      <p id="registerFeedback" class="text-red-500"></p>
+    </div>
+    <!-- TODO 18 -->
+    <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-4">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input id="name" formControlName="name" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('name')?.errors?.required">Name is required.</small>
+          <small *ngIf="registerForm.get('name')?.errors?.minlength">Name must be at least 5 characters long.</small>
+          <small *ngIf="registerForm.get('name')?.errors?.maxlength">Name cannot be more than 25 characters long.</small>
+        </div>
+      </div>
 
-  <!-- TODO 18 -->
-</div>
+      <div>
+        <label for="surname_1" class="block text-sm font-medium text-gray-700">Surname 1</label>
+        <input id="surname_1" formControlName="surname_1" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('surname_1')?.invalid && registerForm.get('surname_1')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('surname_1')?.errors?.required">Surname 1 is required.</small>
+          <small *ngIf="registerForm.get('surname_1')?.errors?.minlength">Surname 1 must be at least 5 characters long.</small>
+          <small *ngIf="registerForm.get('surname_1')?.errors?.maxlength">Surname 1 cannot be more than 25 characters long.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="surname_2" class="block text-sm font-medium text-gray-700">Surname 2</label>
+        <input id="surname_2" formControlName="surname_2" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('surname_2')?.invalid && registerForm.get('surname_2')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('surname_2')?.errors?.minlength">Surname 2 must be at least 5 characters long.</small>
+          <small *ngIf="registerForm.get('surname_2')?.errors?.maxlength">Surname 2 cannot be more than 25 characters long.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="alias" class="block text-sm font-medium text-gray-700">Alias</label>
+        <input id="alias" formControlName="alias" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('alias')?.invalid && registerForm.get('alias')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('alias')?.errors?.required">Alias is required.</small>
+          <small *ngIf="registerForm.get('alias')?.errors?.minlength">Alias must be at least 5 characters long.</small>
+          <small *ngIf="registerForm.get('alias')?.errors?.maxlength">Alias cannot be more than 25 characters long.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="birth_date" class="block text-sm font-medium text-gray-700">Birth Date</label>
+        <input id="birth_date" formControlName="birth_date" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('birth_date')?.invalid && registerForm.get('birth_date')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('birth_date')?.errors?.required">Birth Date is required.</small>
+          <small *ngIf="registerForm.get('birth_date')?.errors?.pattern">Birth Date must be in the format yyyy-mm-dd.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input id="email" formControlName="email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('email')?.errors?.required">Email is required.</small>
+          <small *ngIf="registerForm.get('email')?.errors?.email">Email must be a valid email address.</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" formControlName="password" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+          <small *ngIf="registerForm.get('password')?.errors?.required">Password is required.</small>
+          <small *ngIf="registerForm.get('password')?.errors?.minlength">Password must be at least 8 characters long.</small>
+          <small *ngIf="registerForm.get('password')?.errors?.maxlength">Password cannot be more than 16 characters long.</small>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Register</button>
+    </form>
+  </div>
+</section>
