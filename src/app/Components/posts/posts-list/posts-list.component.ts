@@ -29,6 +29,7 @@ export class PostsListComponent implements OnInit {
     if (userId) {
       try {
         this.posts = await this.postService.getPostsByUserId(userId);
+        console.log(this.posts);
       } catch (error: any) {
         this.sharedService.errorLog(error.error);
       }

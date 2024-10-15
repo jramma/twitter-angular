@@ -92,7 +92,7 @@ export class ProfileComponent implements OnInit {
     const userId = this.localStorageService.get('user_id');
     if (userId) {
       try {
-        const userData = await this.userService.getUSerById(userId);
+        const userData = await this.userService.getUserById(userId);
 
         this.name.setValue(userData.name);
         this.surname_1.setValue(userData.surname_1);

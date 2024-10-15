@@ -56,6 +56,10 @@ export class HeaderComponent implements OnInit {
   profile(): void {
     this.router.navigateByUrl('profile');
   }
+  dashboard(): void {
+    this.router.navigateByUrl('dashboard');
+  }
+
 
   logout(): void {
     // TODO 15

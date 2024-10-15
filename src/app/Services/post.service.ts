@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NONE_TYPE } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { PostDTO } from '../Models/post.dto';
@@ -17,20 +17,29 @@ interface deleteResponse {
 export class PostService {
   private urlBlogUocApi: string;
   private controller: string;
-
+  private baseUrl: string;
   constructor(private http: HttpClient) {
     this.controller = 'posts';
     this.urlBlogUocApi = 'http://localhost:3000/' + this.controller;
+    this.baseUrl = 'http://localhost:3000/';
   }
 
   getPosts(): Promise<PostDTO[]> {
     return this.http.get<PostDTO[]>(this.urlBlogUocApi).toPromise();
   }
-
+  // TODO 22
   getPostsByUserId(userId: string): Promise<PostDTO[]> {
-    // TODO 22
-    return this.http.get<PostDTO[]>(`${this.urlBlogUocApi}/users/posts/${userId}`).toPromise();
+    const token = localStorage.getItem('access_token');
+    console.log(token);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
 
+    return this.http
+      .get<PostDTO[]>(`http://localhost:3000/users/posts/${userId}`, {
+        headers,
+      })
+      .toPromise();
   }
 
   createPost(post: PostDTO): Promise<PostDTO> {
@@ -45,7 +54,7 @@ export class PostService {
 
   updatePost(postId: string, post: PostDTO): Promise<PostDTO> {
     return this.http
-      .put<PostDTO>(this.urlBlogUocApi + '/' + postId, post)
+      .put<PostDTO>(this.baseUrl+ 'posts/' + postId, post)
       .toPromise();
   }
 

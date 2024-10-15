@@ -15,6 +15,7 @@ import { SharedService } from 'src/app/Services/shared.service';
 export class HomeComponent {
   posts!: PostDTO[];
   showButtons: boolean;
+  selectedFormat: number = 1; 
   constructor(
     private postService: PostService,
     private localStorageService: LocalStorageService,

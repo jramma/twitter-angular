@@ -1,15 +1,15 @@
-<div style="margin-left: auto; margin-right: auto">
-  <p id="postFeedback"></p>
+<div class="mx-auto">
+  <p id="postFeedback" class="text-red-500"></p>
 </div>
-<div>
+<section class="container mx-auto p-6 bg-dark-gray text-white max-w-96">
   <form [formGroup]="postForm" (ngSubmit)="savePost()">
     <div class="mb-4">
-      <label for="title" class="block text-gray-700">Title</label>
+      <label for="title" class="block text-gray-400">Title</label>
       <input
         id="title"
         type="text"
         formControlName="title"
-        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
       />
       <div
         *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched"
@@ -25,11 +25,11 @@
     </div>
 
     <div class="mb-4">
-      <label for="description" class="block text-gray-700">Description</label>
+      <label for="description" class="block text-gray-400">Description</label>
       <textarea
         id="description"
         formControlName="description"
-        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
       ></textarea>
       <div
         *ngIf="
@@ -48,14 +48,12 @@
     </div>
 
     <div class="mb-4">
-      <label for="publication_date" class="block text-gray-700"
-        >Publication Date</label
-      >
+      <label for="publication_date" class="block text-gray-400">Publication Date</label>
       <input
         id="publication_date"
         type="date"
         formControlName="publication_date"
-        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
       />
       <div
         *ngIf="
@@ -74,12 +72,12 @@
     </div>
 
     <div class="mb-4">
-      <label for="categories" class="block text-gray-700">Categories</label>
+      <label for="categories" class="block text-gray-400">Categories</label>
       <select
         id="categories"
         formControlName="categories"
         multiple
-        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
       >
         <option *ngFor="let category of categories" [value]="category.categoryId">
           {{ category.title }}
@@ -99,19 +97,17 @@
     </div>
 
     <div class="mb-4">
-      <label for="newCategory" class="block text-gray-700"
-        >Add New Category</label
-      >
+      <label for="newCategory" class="block text-gray-400">Add New Category</label>
       <input
         id="newCategory"
         type="text"
         formControlName="newCategoryName"
-        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
       />
       <button
         type="button"
         (click)="addCategory()"
-        class="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+        class="mt-2 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500 transition-colors"
       >
         Add Category
       </button>
@@ -120,11 +116,11 @@
     <div class="flex justify-end">
       <button
         type="submit"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
+        class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500 transition-colors"
         [disabled]="postForm.invalid"
       >
         Save Post
       </button>
     </div>
   </form>
-</div>
+</section>
