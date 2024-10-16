@@ -1,5 +1,6 @@
 <section class="container mx-auto p-4 bg-dark-gray text-white">
-  <!-- Selector para elegir el formato de la fecha -->
+  <!-- NO FUNCIONA BIEN -->
+  <!-- Selector para elegir el formato de la fecha  -->
   <!-- <div class="mb-4">
     <label for="formatSelector" class="block text-gray-400 mb-2">Select Date Format:</label>
     <select
@@ -23,7 +24,7 @@
     <h3 class="text-xl font-semibold text-blue-400">{{ post.title }}</h3>
     <p class="text-gray-400">{{ post.description }}</p>
     <p class="text-gray-500 text-sm">
-      Published on: {{ post.publication_date | formatDate: selectedFormat }}
+      Published on: {{ post.publication_date | formatDate : selectedFormat }}
     </p>
     <div class="mt-2">
       <span

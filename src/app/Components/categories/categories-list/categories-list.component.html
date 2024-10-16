@@ -1,16 +1,16 @@
-<section class="container  p-4">
-  <h2 class="text-2xl font-bold mb-4">Categories List</h2>
+<section class="container p-4">
+  <h2 class="text-2xl font-bold mb-4 text-white">Categories List</h2>
   <button
     (click)="createCategory()"
-    class="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+    class="mb-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
   >
     ADD
   </button>
 
   <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-300">
+    <table class="min-w-full bg-dark-slight border border-gray-600">
       <thead>
-        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <tr class="bg-gray-800 text-gray-400 uppercase text-sm leading-normal">
           <th class="py-3 px-6 text-left">ID</th>
           <th class="py-3 px-6 text-left">TITLE</th>
           <th class="py-3 px-6 text-left">DESCRIPTION</th>
@@ -18,10 +18,10 @@
           <th class="py-3 px-6 text-left">ACTIONS</th>
         </tr>
       </thead>
-      <tbody class="text-gray-600 text-sm font-light">
+      <tbody class="text-gray-300 text-sm font-light">
         <tr
           *ngFor="let category of categories"
-          class="border-b border-gray-200 hover:bg-gray-100"
+          class="border-b border-gray-600 hover:bg-gray-700"
         >
           <td class="py-3 px-6 text-left whitespace-nowrap">
             {{ category.categoryId }}
@@ -37,13 +37,13 @@
           <td class="py-3 px-6 text-left">
             <button
               (click)="updateCategory(category.categoryId)"
-              class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-700 mr-2"
+              class="bg-yellow-500 text-white px-2 py-1 rounded-md hover:bg-yellow-700 mr-2"
             >
               UPDATE
             </button>
             <button
               (click)="deleteCategory(category.categoryId)"
-              class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
+              class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-700"
             >
               DELETE
             </button>

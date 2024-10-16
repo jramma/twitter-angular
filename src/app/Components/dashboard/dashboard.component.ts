@@ -20,10 +20,8 @@ export class DashboardComponent implements OnInit {
 
   async loadPosts(): Promise<void> {
     try {
-      // Consumir el endpoint para obtener todos los posts
       this.posts = await this.postService.getPosts();
 
-      // Calcular el total de likes y dislikes
       this.totalLikes = this.posts.reduce((sum, post) => sum + post.num_likes, 0);
       this.totalDislikes = this.posts.reduce((sum, post) => sum + post.num_dislikes, 0);
     } catch (error: any) {
