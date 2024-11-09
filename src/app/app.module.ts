@@ -25,7 +25,6 @@ import { authReducer } from './store/reducers/auth.reducer';
 
 @NgModule({
   declarations: [
-
     AppComponent,
     RegisterComponent,
     LoginComponent,
