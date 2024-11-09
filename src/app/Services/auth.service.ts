@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'; // Importa Observable
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { AuthDTO } from '../Models/auth.dto';
 
 interface AuthToken {
@@ -12,16 +12,17 @@ interface AuthToken {
   providedIn: 'root',
 })
 export class AuthService {
-  private urlBlogUocApi: string;
-  private controller: string;
+  private urlBlogUocApi = 'http://localhost:3000/auth';
 
-  constructor(private http: HttpClient) {
-    this.controller = 'auth';
-    this.urlBlogUocApi = 'http://localhost:3000/' + this.controller;
-  }
+  constructor(private http: HttpClient) {}
 
   login(auth: AuthDTO): Observable<AuthToken> {
-    // Cambiar Promise a Observable
-    return this.http.post<AuthToken>(this.urlBlogUocApi, auth);
+    console.log('Datos de autenticación:', auth);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post<AuthToken>(this.urlBlogUocApi, auth, { headers });
   }
 }

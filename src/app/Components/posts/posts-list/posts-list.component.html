@@ -28,12 +28,14 @@
         <td class="py-2 px-4 border-b border-gray-600">{{ post.num_dislikes }}</td>
         <td class="py-2 px-4 border-b border-gray-600">
           <button
+          *ngIf="post.postId"
             (click)="updatePost(post.postId)"
             class="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600 transition-colors"
           >
             UPDATE
           </button>
           <button
+          *ngIf="post.postId"
             (click)="deletePost(post.postId)"
             class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"
           >

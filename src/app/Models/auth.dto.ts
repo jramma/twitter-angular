@@ -1,6 +1,6 @@
 export class AuthDTO {
-  user_id: string;
-  access_token: string;
+  user_id?: string;
+  access_token?: string;
   email: string;
   password: string;
 

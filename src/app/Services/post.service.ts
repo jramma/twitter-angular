@@ -35,29 +35,55 @@ export class PostService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<PostDTO[]>(`http://localhost:3000/users/posts/${userId}`, {
-      headers,
-    });
+    return this.http.get<PostDTO[]>(
+      `http://localhost:3000/users/posts/${userId}`,
+      {
+        headers,
+      }
+    );
   }
 
   createPost(post: PostDTO): Observable<PostDTO> {
-    return this.http.post<PostDTO>(this.urlBlogUocApi, post);
+    console.log('Datos del post:', post);
+    if (!post.postId) {
+      delete post.postId;
+    }
+
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<PostDTO>(this.urlBlogUocApi, post, { headers });
+  }
+
+  updatePost(postId: string, post: PostDTO): Observable<PostDTO> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.put<PostDTO>(`${this.baseUrl}posts/${postId}`, post, {
+      headers,
+    });
   }
 
   getPostById(postId: string): Observable<PostDTO> {
     return this.http.get<PostDTO>(this.urlBlogUocApi + '/' + postId);
   }
 
-  updatePost(postId: string, post: PostDTO): Observable<PostDTO> {
-    return this.http.put<PostDTO>(this.baseUrl + 'posts/' + postId, post);
-  }
-
   likePost(postId: string): Observable<updateResponse> {
-    return this.http.put<updateResponse>(this.urlBlogUocApi + '/like/' + postId, {});
+    return this.http.put<updateResponse>(
+      this.urlBlogUocApi + '/like/' + postId,
+      {}
+    );
   }
 
   dislikePost(postId: string): Observable<updateResponse> {
-    return this.http.put<updateResponse>(this.urlBlogUocApi + '/dislike/' + postId, {});
+    return this.http.put<updateResponse>(
+      this.urlBlogUocApi + '/dislike/' + postId,
+      {}
+    );
   }
 
   deletePost(postId: string): Observable<deleteResponse> {

@@ -27,6 +27,7 @@ export class CategoryService {
   }
 
   createCategory(category: CategoryDTO): Observable<CategoryDTO> {
+    console.log('Datos de la categoría:', category);
     // Cambiamos Promise a Observable
     return this.http.post<CategoryDTO>(this.urlBlogUocApi, category);
   }
