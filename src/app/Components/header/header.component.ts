@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HeaderMenus } from 'src/app/Models/header-menus.dto';
-import { HeaderMenusService } from 'src/app/Services/header-menus.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
+import { Store } from '@ngrx/store';
+import { logout } from 'src/app/store/actions/auth.actions';
+import { selectShowAuthSection, selectShowNoAuthSection } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-header',
@@ -10,27 +10,23 @@ import { LocalStorageService } from 'src/app/Services/local-storage.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  showAuthSection: boolean;
-  showNoAuthSection: boolean;
+  showAuthSection: boolean = false;
+  showNoAuthSection: boolean = true;
 
   constructor(
     private router: Router,
-    private headerMenusService: HeaderMenusService,
-    private localStorageService: LocalStorageService
-  ) {
-    this.showAuthSection = false;
-    this.showNoAuthSection = true;
-  }
+    private store: Store
+  ) {}
 
   ngOnInit(): void {
-    this.headerMenusService.headerManagement.subscribe(
-      (headerInfo: HeaderMenus) => {
-        if (headerInfo) {
-          this.showAuthSection = headerInfo.showAuthSection;
-          this.showNoAuthSection = headerInfo.showNoAuthSection;
-        }
-      }
-    );
+    // Suscribirse a la visibilidad de las secciones de autenticación desde el estado de Redux
+    this.store.select(selectShowAuthSection).subscribe((showAuth) => {
+      this.showAuthSection = showAuth;
+    });
+
+    this.store.select(selectShowNoAuthSection).subscribe((showNoAuth) => {
+      this.showNoAuthSection = showNoAuth;
+    });
   }
 
   home(): void {
@@ -56,23 +52,16 @@ export class HeaderComponent implements OnInit {
   profile(): void {
     this.router.navigateByUrl('profile');
   }
+
   dashboard(): void {
     this.router.navigateByUrl('dashboard');
   }
 
-
   logout(): void {
-    // TODO 15
-    this.localStorageService.remove('user_id');
-    this.localStorageService.remove('access_token');
+    // Despachar la acción de logout para limpiar el estado de autenticación
+    this.store.dispatch(logout());
 
-    const headerInfo: HeaderMenus = {
-      showAuthSection: false,
-      showNoAuthSection: true,
-    };
-
-    this.headerMenusService.headerManagement.next(headerInfo);
-
+    // Redirigir al usuario a la página principal después de hacer logout
     this.router.navigateByUrl('home');
   }
 }

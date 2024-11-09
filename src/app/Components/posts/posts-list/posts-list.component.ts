@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { PostService } from 'src/app/Services/post.service';
 import { SharedService } from 'src/app/Services/shared.service';
 import { PostDTO } from 'src/app/Models/post.dto';
+import { Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-posts-list',
@@ -12,22 +13,26 @@ import { PostDTO } from 'src/app/Models/post.dto';
 })
 export class PostsListComponent implements OnInit {
   posts!: PostDTO[];
+  
+  userId: string | undefined | null = null;
 
   constructor(
     private postService: PostService,
     private router: Router,
-    private localStorageService: LocalStorageService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
-    this.loadPosts();
+    this.store.select(selectUserId).subscribe((userId) => {
+      this.userId = userId;
+      this.loadPosts(); // Cargar los posts cuando se obtenga el userId
+    });
   }
 
   loadPosts(): void {
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.postService.getPostsByUserId(userId).subscribe({
+    if (this.userId) {
+      this.postService.getPostsByUserId(this.userId).subscribe({
         next: (posts) => {
           this.posts = posts;
           console.log(this.posts);

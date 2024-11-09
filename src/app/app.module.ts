@@ -19,6 +19,9 @@ import { FormatDatePipe } from './Pipes/format-date.pipe';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { authReducer } from './store/reducers/auth.reducer';
 
 @NgModule({
   declarations: [
@@ -38,11 +41,14 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
     DashboardComponent,
   ],
   imports: [
+
     FormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    StoreModule.forRoot({ auth: authReducer }), // Configurar el StoreModule con el reducer de autenticación
+    StoreDevtoolsModule.instrument({ maxAge: 25 }), // Configurar DevTools
   ],
   providers: [
     {

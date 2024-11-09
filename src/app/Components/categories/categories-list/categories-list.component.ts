@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { CategoryService } from 'src/app/Services/category.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { SharedService } from 'src/app/Services/shared.service';
+import { Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-categories-list',
@@ -12,21 +13,26 @@ import { SharedService } from 'src/app/Services/shared.service';
 })
 export class CategoriesListComponent {
   categories!: CategoryDTO[];
+  userId: string | undefined | null = null;
 
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private localStorageService: LocalStorageService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private store: Store
   ) {
-    this.loadCategories();
+    this.store.select(selectUserId).subscribe((userId) => {
+      this.userId = userId;
+      if (this.userId) {
+        this.loadCategories();
+      }
+    });
   }
 
   private loadCategories(): void {
     let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.categoryService.getCategoriesByUserId(userId).subscribe({
+    if (this.userId) {
+      this.categoryService.getCategoriesByUserId(this.userId).subscribe({
         next: (categories) => {
           this.categories = categories;
         },
@@ -49,8 +55,9 @@ export class CategoriesListComponent {
   deleteCategory(categoryId: string): void {
     let errorResponse: any;
 
-    // Mostrar popup de confirmación
-    const result = confirm('Confirm delete category with id: ' + categoryId + ' .');
+    const result = confirm(
+      'Confirm delete category with id: ' + categoryId + ' .'
+    );
     if (result) {
       this.categoryService.deleteCategory(categoryId).subscribe({
         next: (rowsAffected) => {

@@ -8,8 +8,9 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { CategoryService } from 'src/app/Services/category.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { SharedService } from 'src/app/Services/shared.service';
+import { Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-category-form',
@@ -24,6 +25,7 @@ export class CategoryFormComponent implements OnInit {
 
   categoryForm: UntypedFormGroup;
   isValidForm: boolean | null;
+  userId: string | undefined | null = null;
 
   private isUpdateMode: boolean;
   private validRequest: boolean;
@@ -35,7 +37,7 @@ export class CategoryFormComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sharedService: SharedService,
-    private localStorageService: LocalStorageService
+    private store: Store
   ) {
     this.isValidForm = null;
     this.categoryId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -68,6 +70,11 @@ export class CategoryFormComponent implements OnInit {
   ngOnInit(): void {
     let errorResponse: any;
 
+    // Obtener el userId desde el estado de Redux
+    this.store.select(selectUserId).subscribe((userId) => {
+      this.userId = userId;
+    });
+
     if (this.categoryId) {
       this.isUpdateMode = true;
       this.categoryService.getCategoryById(this.categoryId).subscribe({
@@ -93,9 +100,9 @@ export class CategoryFormComponent implements OnInit {
   private editCategory(): void {
     let errorResponse: any;
     let responseOK = false;
-    const userId = this.localStorageService.get('user_id');
-    if (userId && this.categoryId) {
-      this.category.userId = userId;
+
+    if (this.userId && this.categoryId) {
+      this.category.userId = this.userId;
       this.categoryService
         .updateCategory(this.categoryId, this.category)
         .subscribe({
@@ -117,15 +124,17 @@ export class CategoryFormComponent implements OnInit {
             }
           },
         });
+    } else {
+      console.error('User ID or Category ID is missing.');
     }
   }
 
   private createCategory(): void {
     let errorResponse: any;
     let responseOK = false;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.category.userId = userId;
+
+    if (this.userId) {
+      this.category.userId = this.userId;
       this.categoryService.createCategory(this.category).subscribe({
         next: () => {
           responseOK = true;
@@ -145,6 +154,8 @@ export class CategoryFormComponent implements OnInit {
           }
         },
       });
+    } else {
+      console.error('User ID is missing.');
     }
   }
 

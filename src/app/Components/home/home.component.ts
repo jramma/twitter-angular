@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HeaderMenus } from 'src/app/Models/header-menus.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
-import { HeaderMenusService } from 'src/app/Services/header-menus.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { PostService } from 'src/app/Services/post.service';
 import { SharedService } from 'src/app/Services/shared.service';
+import { Store } from '@ngrx/store';
+import {
+  selectUserId,
+  selectShowAuthSection,
+} from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-home',
@@ -16,34 +18,31 @@ export class HomeComponent implements OnInit {
   posts!: PostDTO[];
   showButtons: boolean;
   selectedFormat: number = 1;
+  userId: string | undefined | null = null;
 
   constructor(
     private postService: PostService,
-    private localStorageService: LocalStorageService,
     private sharedService: SharedService,
-    private router: Router,
-    private headerMenusService: HeaderMenusService
+    private store: Store,
+    private router: Router
   ) {
     this.showButtons = false;
     this.loadPosts();
   }
 
   ngOnInit(): void {
-    this.headerMenusService.headerManagement.subscribe(
-      (headerInfo: HeaderMenus) => {
-        if (headerInfo) {
-          this.showButtons = headerInfo.showAuthSection;
-        }
-      }
-    );
+    // Suscribirse al estado de autenticación para mostrar u ocultar botones
+    this.store.select(selectShowAuthSection).subscribe((showAuth) => {
+      this.showButtons = showAuth;
+    });
+
+    // Obtener userId del estado de Redux
+    this.store.select(selectUserId).subscribe((userId) => {
+      this.userId = userId;
+    });
   }
 
   private loadPosts(): void {
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.showButtons = true;
-    }
-
     this.postService.getPosts().subscribe({
       next: (posts) => {
         this.posts = posts;

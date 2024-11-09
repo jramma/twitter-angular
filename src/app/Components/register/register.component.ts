@@ -7,11 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HeaderMenusService } from 'src/app/Services/header-menus.service';
 import { SharedService } from 'src/app/Services/shared.service';
 import { UserService } from 'src/app/Services/user.service';
 import { UserDTO } from 'src/app/Models/user.dto';
-import { HeaderMenus } from 'src/app/Models/header-menus.dto';
+import { Store } from '@ngrx/store';
+import { logout } from 'src/app/store/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +19,6 @@ import { HeaderMenus } from 'src/app/Models/header-menus.dto';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  // TODO 16
   registerUser: UserDTO;
 
   name: FormControl;
@@ -32,14 +31,14 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   isValidForm: boolean | null;
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private userService: UserService,
     private sharedService: SharedService,
-    private headerMenusService: HeaderMenusService,
+    private store: Store,
     private router: Router
   ) {
-    // TODO 17
     this.registerUser = {} as UserDTO;
     this.isValidForm = null;
 
@@ -105,11 +104,8 @@ export class RegisterComponent implements OnInit {
       responseOK = false;
       errorResponse = error.error;
 
-      const headerInfo: HeaderMenus = {
-        showAuthSection: false,
-        showNoAuthSection: true,
-      };
-      this.headerMenusService.headerManagement.next(headerInfo);
+      // Despachar logout para restablecer el estado de autenticación en caso de error
+      this.store.dispatch(logout());
 
       this.sharedService.errorLog(errorResponse);
     }
@@ -121,9 +117,7 @@ export class RegisterComponent implements OnInit {
     );
 
     if (responseOK) {
-      // Reset the form
       this.registerForm.reset();
-      // After reset form we set birthDate to today again (is an example)
       this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
       this.router.navigateByUrl('home');
     }

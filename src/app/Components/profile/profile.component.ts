@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
-import { SharedService } from 'src/app/Services/shared.service';
-import { UserService } from 'src/app/Services/user.service';
+import { formatDate } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { formatDate } from '@angular/common';
+import { SharedService } from 'src/app/Services/shared.service';
+import { UserService } from 'src/app/Services/user.service';
 import { UserDTO } from 'src/app/Models/user.dto';
+import { Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-profile',
@@ -29,12 +30,13 @@ export class ProfileComponent implements OnInit {
 
   profileForm: FormGroup;
   isValidForm: boolean | null;
+  userId: string | undefined | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private sharedService: SharedService,
-    private localStorageService: LocalStorageService
+    private store: Store
   ) {
     this.profileUser = {} as UserDTO;
     this.isValidForm = null;
@@ -82,35 +84,40 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.userService.getUserById(userId).subscribe({
-        next: (userData) => {
-          this.name.setValue(userData.name);
-          this.surname_1.setValue(userData.surname_1);
-          this.surname_2.setValue(userData.surname_2);
-          this.alias.setValue(userData.alias);
-          this.birth_date.setValue(
-            formatDate(userData.birth_date, 'yyyy-MM-dd', 'en')
-          );
-          this.email.setValue(userData.email);
 
-          this.profileForm = this.formBuilder.group({
-            name: this.name,
-            surname_1: this.surname_1,
-            surname_2: this.surname_2,
-            alias: this.alias,
-            birth_date: this.birth_date,
-            email: this.email,
-            password: this.password,
-          });
-        },
-        error: (error) => {
-          errorResponse = error.error;
-          this.sharedService.errorLog(errorResponse);
-        },
-      });
-    }
+    // Obtener userId desde el estado de Redux
+    this.store.select(selectUserId).subscribe((userId) => {
+      this.userId = userId;
+
+      if (this.userId) {
+        this.userService.getUserById(this.userId).subscribe({
+          next: (userData) => {
+            this.name.setValue(userData.name);
+            this.surname_1.setValue(userData.surname_1);
+            this.surname_2.setValue(userData.surname_2);
+            this.alias.setValue(userData.alias);
+            this.birth_date.setValue(
+              formatDate(userData.birth_date, 'yyyy-MM-dd', 'en')
+            );
+            this.email.setValue(userData.email);
+
+            this.profileForm = this.formBuilder.group({
+              name: this.name,
+              surname_1: this.surname_1,
+              surname_2: this.surname_2,
+              alias: this.alias,
+              birth_date: this.birth_date,
+              email: this.email,
+              password: this.password,
+            });
+          },
+          error: (error) => {
+            errorResponse = error.error;
+            this.sharedService.errorLog(errorResponse);
+          },
+        });
+      }
+    });
   }
 
   updateUser(): void {
@@ -125,9 +132,8 @@ export class ProfileComponent implements OnInit {
     this.isValidForm = true;
     this.profileUser = this.profileForm.value;
 
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.userService.updateUser(userId, this.profileUser).subscribe({
+    if (this.userId) {
+      this.userService.updateUser(this.userId, this.profileUser).subscribe({
         next: () => {
           responseOK = true;
         },
