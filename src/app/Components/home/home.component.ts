@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderMenus } from 'src/app/Models/header-menus.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
@@ -12,10 +12,11 @@ import { SharedService } from 'src/app/Services/shared.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   posts!: PostDTO[];
   showButtons: boolean;
-  selectedFormat: number = 1; 
+  selectedFormat: number = 1;
+
   constructor(
     private postService: PostService,
     private localStorageService: LocalStorageService,
@@ -37,40 +38,41 @@ export class HomeComponent {
     );
   }
 
-  private async loadPosts(): Promise<void> {
-    let errorResponse: any;
+  private loadPosts(): void {
     const userId = this.localStorageService.get('user_id');
     if (userId) {
       this.showButtons = true;
     }
 
-    try {
-      this.posts = await this.postService.getPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+    this.postService.getPosts().subscribe({
+      next: (posts) => {
+        this.posts = posts;
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 
-  async like(postId: string): Promise<void> {
-    let errorResponse: any;
-    try {
-      await this.postService.likePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+  like(postId: string): void {
+    this.postService.likePost(postId).subscribe({
+      next: () => {
+        this.loadPosts(); // Recargar la lista de posts después de dar "like"
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 
-  async dislike(postId: string): Promise<void> {
-    let errorResponse: any;
-    try {
-      await this.postService.dislikePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+  dislike(postId: string): void {
+    this.postService.dislikePost(postId).subscribe({
+      next: () => {
+        this.loadPosts(); // Recargar la lista de posts después de dar "dislike"
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 }

@@ -7,17 +7,16 @@ import {
   FormControl,
   FormGroup,
   Validators,
-
 } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { UserDTO } from 'src/app/Models/user.dto';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  // TODO 4
   profileUser: UserDTO;
 
   name: FormControl;
@@ -37,7 +36,6 @@ export class ProfileComponent implements OnInit {
     private sharedService: SharedService,
     private localStorageService: LocalStorageService
   ) {
-    // TODO 5
     this.profileUser = {} as UserDTO;
     this.isValidForm = null;
 
@@ -64,10 +62,7 @@ export class ProfileComponent implements OnInit {
       Validators.required,
       Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
     ]);
-    this.email = new FormControl('', [
-      Validators.required,
-      Validators.email,
-    ]);
+    this.email = new FormControl('', [Validators.required, Validators.email]);
     this.password = new FormControl('', [
       Validators.required,
       Validators.minLength(8),
@@ -85,42 +80,41 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     let errorResponse: any;
-
-    // load user data
     const userId = this.localStorageService.get('user_id');
     if (userId) {
-      try {
-        const userData = await this.userService.getUserById(userId);
+      this.userService.getUserById(userId).subscribe({
+        next: (userData) => {
+          this.name.setValue(userData.name);
+          this.surname_1.setValue(userData.surname_1);
+          this.surname_2.setValue(userData.surname_2);
+          this.alias.setValue(userData.alias);
+          this.birth_date.setValue(
+            formatDate(userData.birth_date, 'yyyy-MM-dd', 'en')
+          );
+          this.email.setValue(userData.email);
 
-        this.name.setValue(userData.name);
-        this.surname_1.setValue(userData.surname_1);
-        this.surname_2.setValue(userData.surname_2);
-        this.alias.setValue(userData.alias);
-        this.birth_date.setValue(
-          formatDate(userData.birth_date, 'yyyy-MM-dd', 'en')
-        );
-        this.email.setValue(userData.email);
-
-        this.profileForm = this.formBuilder.group({
-          name: this.name,
-          surname_1: this.surname_1,
-          surname_2: this.surname_2,
-          alias: this.alias,
-          birth_date: this.birth_date,
-          email: this.email,
-          password: this.password,
-        });
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
+          this.profileForm = this.formBuilder.group({
+            name: this.name,
+            surname_1: this.surname_1,
+            surname_2: this.surname_2,
+            alias: this.alias,
+            birth_date: this.birth_date,
+            email: this.email,
+            password: this.password,
+          });
+        },
+        error: (error) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        },
+      });
     }
   }
 
-  async updateUser(): Promise<void> {
-    let responseOK: boolean = false;
+  updateUser(): void {
+    let responseOK = false;
     this.isValidForm = false;
     let errorResponse: any;
 
@@ -132,23 +126,24 @@ export class ProfileComponent implements OnInit {
     this.profileUser = this.profileForm.value;
 
     const userId = this.localStorageService.get('user_id');
-
     if (userId) {
-      try {
-        await this.userService.updateUser(userId, this.profileUser);
-        responseOK = true;
-      } catch (error: any) {
-        responseOK = false;
-        errorResponse = error.error;
-
-        this.sharedService.errorLog(errorResponse);
-      }
+      this.userService.updateUser(userId, this.profileUser).subscribe({
+        next: () => {
+          responseOK = true;
+        },
+        error: (error) => {
+          responseOK = false;
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        },
+        complete: async () => {
+          await this.sharedService.managementToast(
+            'profileFeedback',
+            responseOK,
+            errorResponse
+          );
+        },
+      });
     }
-
-    await this.sharedService.managementToast(
-      'profileFeedback',
-      responseOK,
-      errorResponse
-    );
   }
 }

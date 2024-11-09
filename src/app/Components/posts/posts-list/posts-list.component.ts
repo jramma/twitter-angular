@@ -24,15 +24,18 @@ export class PostsListComponent implements OnInit {
     this.loadPosts();
   }
 
-  async loadPosts(): Promise<void> {
+  loadPosts(): void {
     const userId = this.localStorageService.get('user_id');
     if (userId) {
-      try {
-        this.posts = await this.postService.getPostsByUserId(userId);
-        console.log(this.posts);
-      } catch (error: any) {
-        this.sharedService.errorLog(error.error);
-      }
+      this.postService.getPostsByUserId(userId).subscribe({
+        next: (posts) => {
+          this.posts = posts;
+          console.log(this.posts);
+        },
+        error: (error) => {
+          this.sharedService.errorLog(error.error);
+        },
+      });
     }
   }
 
@@ -44,17 +47,19 @@ export class PostsListComponent implements OnInit {
     this.router.navigateByUrl(`/user/post/${postId}`);
   }
 
-  async deletePost(postId: string): Promise<void> {
+  deletePost(postId: string): void {
     const confirmation = confirm('Are you sure you want to delete this post?');
     if (!confirmation) {
       return;
     }
 
-    try {
-      await this.postService.deletePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      this.sharedService.errorLog(error.error);
-    }
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        this.loadPosts(); // Recargar la lista de posts tras eliminar
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 }

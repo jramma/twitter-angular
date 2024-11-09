@@ -18,14 +18,22 @@ export class DashboardComponent implements OnInit {
     this.loadPosts();
   }
 
-  async loadPosts(): Promise<void> {
-    try {
-      this.posts = await this.postService.getPosts();
-
-      this.totalLikes = this.posts.reduce((sum, post) => sum + post.num_likes, 0);
-      this.totalDislikes = this.posts.reduce((sum, post) => sum + post.num_dislikes, 0);
-    } catch (error: any) {
-      console.error('Error loading posts:', error);
-    }
+  loadPosts(): void {
+    this.postService.getPosts().subscribe({
+      next: (posts) => {
+        this.posts = posts;
+        this.totalLikes = this.posts.reduce(
+          (sum, post) => sum + post.num_likes,
+          0
+        );
+        this.totalDislikes = this.posts.reduce(
+          (sum, post) => sum + post.num_dislikes,
+          0
+        );
+      },
+      error: (error) => {
+        console.error('Error loading posts:', error);
+      },
+    });
   }
 }

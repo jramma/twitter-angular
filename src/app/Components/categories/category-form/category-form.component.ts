@@ -65,96 +65,90 @@ export class CategoryFormComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     let errorResponse: any;
 
-    // update
     if (this.categoryId) {
       this.isUpdateMode = true;
-      try {
-        this.category = await this.categoryService.getCategoryById(
-          this.categoryId
-        );
-
-        this.title.setValue(this.category.title);
-
-        this.description.setValue(this.category.description);
-
-        this.css_color.setValue(this.category.css_color);
-
-        this.categoryForm = this.formBuilder.group({
-          title: this.title,
-          description: this.description,
-          css_color: this.css_color,
-        });
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
-    }
-  }
-
-  private async editCategory(): Promise<boolean> {
-    let errorResponse: any;
-    let responseOK: boolean = false;
-    if (this.categoryId) {
-      const userId = this.localStorageService.get('user_id');
-      if (userId) {
-        this.category.userId = userId;
-        try {
-          await this.categoryService.updateCategory(
-            this.categoryId,
-            this.category
-          );
-          responseOK = true;
-        } catch (error: any) {
+      this.categoryService.getCategoryById(this.categoryId).subscribe({
+        next: (category) => {
+          this.category = category;
+          this.title.setValue(this.category.title);
+          this.description.setValue(this.category.description);
+          this.css_color.setValue(this.category.css_color);
+          this.categoryForm = this.formBuilder.group({
+            title: this.title,
+            description: this.description,
+            css_color: this.css_color,
+          });
+        },
+        error: (error) => {
           errorResponse = error.error;
           this.sharedService.errorLog(errorResponse);
-        }
-
-        await this.sharedService.managementToast(
-          'categoryFeedback',
-          responseOK,
-          errorResponse
-        );
-
-        if (responseOK) {
-          this.router.navigateByUrl('categories');
-        }
-      }
+        },
+      });
     }
-    return responseOK;
   }
 
-  private async createCategory(): Promise<boolean> {
+  private editCategory(): void {
     let errorResponse: any;
-    let responseOK: boolean = false;
+    let responseOK = false;
+    const userId = this.localStorageService.get('user_id');
+    if (userId && this.categoryId) {
+      this.category.userId = userId;
+      this.categoryService
+        .updateCategory(this.categoryId, this.category)
+        .subscribe({
+          next: () => {
+            responseOK = true;
+          },
+          error: (error) => {
+            errorResponse = error.error;
+            this.sharedService.errorLog(errorResponse);
+          },
+          complete: async () => {
+            await this.sharedService.managementToast(
+              'categoryFeedback',
+              responseOK,
+              errorResponse
+            );
+            if (responseOK) {
+              this.router.navigateByUrl('categories');
+            }
+          },
+        });
+    }
+  }
+
+  private createCategory(): void {
+    let errorResponse: any;
+    let responseOK = false;
     const userId = this.localStorageService.get('user_id');
     if (userId) {
       this.category.userId = userId;
-      try {
-        await this.categoryService.createCategory(this.category);
-        responseOK = true;
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
-
-      await this.sharedService.managementToast(
-        'categoryFeedback',
-        responseOK,
-        errorResponse
-      );
-
-      if (responseOK) {
-        this.router.navigateByUrl('categories');
-      }
+      this.categoryService.createCategory(this.category).subscribe({
+        next: () => {
+          responseOK = true;
+        },
+        error: (error) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        },
+        complete: async () => {
+          await this.sharedService.managementToast(
+            'categoryFeedback',
+            responseOK,
+            errorResponse
+          );
+          if (responseOK) {
+            this.router.navigateByUrl('categories');
+          }
+        },
+      });
     }
-
-    return responseOK;
   }
 
-  async saveCategory() {
+  saveCategory(): void {
     this.isValidForm = false;
 
     if (this.categoryForm.invalid) {
@@ -164,11 +158,10 @@ export class CategoryFormComponent implements OnInit {
     this.isValidForm = true;
     this.category = this.categoryForm.value;
 
-    // TODO 10
     if (this.isUpdateMode) {
-      this.validRequest = await this.editCategory();
+      this.editCategory();
     } else {
-      this.validRequest = await this.createCategory();
+      this.createCategory();
     }
   }
 }

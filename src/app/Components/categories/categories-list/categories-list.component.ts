@@ -22,51 +22,47 @@ export class CategoriesListComponent {
     this.loadCategories();
   }
 
-  private async loadCategories(): Promise<void> {
+  private loadCategories(): void {
     let errorResponse: any;
     const userId = this.localStorageService.get('user_id');
     if (userId) {
-      try {
-        this.categories = await this.categoryService.getCategoriesByUserId(
-          userId
-        );
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
+      this.categoryService.getCategoriesByUserId(userId).subscribe({
+        next: (categories) => {
+          this.categories = categories;
+        },
+        error: (error) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        },
+      });
     }
   }
 
   createCategory(): void {
-    // TODO 7
     this.router.navigateByUrl('/user/category/');
   }
 
   updateCategory(categoryId: string): void {
-    // TODO 8
     this.router.navigateByUrl('/user/category/' + categoryId);
   }
 
-  async deleteCategory(categoryId: string): Promise<void> {
+  deleteCategory(categoryId: string): void {
     let errorResponse: any;
 
-    // show confirmation popup
-    let result = confirm(
-      'Confirm delete category with id: ' + categoryId + ' .'
-    );
+    // Mostrar popup de confirmación
+    const result = confirm('Confirm delete category with id: ' + categoryId + ' .');
     if (result) {
-      try {
-        const rowsAffected = await this.categoryService.deleteCategory(
-          categoryId
-        );
-        if (rowsAffected.affected > 0) {
-          // TODO 9
-          this.loadCategories();
-        }
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
+      this.categoryService.deleteCategory(categoryId).subscribe({
+        next: (rowsAffected) => {
+          if (rowsAffected.affected > 0) {
+            this.loadCategories(); // Recargar la lista de categorías
+          }
+        },
+        error: (error) => {
+          errorResponse = error.error;
+          this.sharedService.errorLog(errorResponse);
+        },
+      });
     }
   }
 }

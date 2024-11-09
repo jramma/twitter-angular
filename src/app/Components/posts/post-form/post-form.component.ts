@@ -8,6 +8,7 @@ import { SharedService } from 'src/app/Services/shared.service';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
 import { UserService } from 'src/app/Services/user.service';
+
 @Component({
   selector: 'app-post-form',
   templateUrl: './post-form.component.html',
@@ -18,6 +19,7 @@ export class PostFormComponent implements OnInit {
   categories: CategoryDTO[] = [];
   isEditMode = false;
   postId!: string;
+
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
@@ -38,7 +40,7 @@ export class PostFormComponent implements OnInit {
         [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)],
       ],
       categories: [[], Validators.required],
-      newCategoryName: [''], // Agregar el control newCategoryName
+      newCategoryName: [''], // Control para nueva categoría
     });
 
     this.loadCategories();
@@ -52,70 +54,80 @@ export class PostFormComponent implements OnInit {
     });
   }
 
-  async loadCategories(): Promise<void> {
+  loadCategories(): void {
     const userId = this.localStorageService.get('user_id');
     if (userId) {
-      try {
-        this.categories = await this.categoryService.getCategoriesByUserId(
-          userId
-        );
-      } catch (error: any) {
-        this.sharedService.errorLog(error.error);
-      }
-    }
-  }
-
-  async loadPostData(postId: string): Promise<void> {
-    try {
-      const post = await this.postService.getPostById(postId);
-      const formattedDate = new Date(post.publication_date)
-        .toISOString()
-        .split('T')[0];
-
-      this.postForm.patchValue({
-        title: post.title,
-        description: post.description,
-        publication_date: formattedDate,
-        categories: post.categories.map((category) => category.categoryId),
+      this.categoryService.getCategoriesByUserId(userId).subscribe({
+        next: (categories) => {
+          this.categories = categories;
+        },
+        error: (error) => {
+          this.sharedService.errorLog(error.error);
+        },
       });
-    } catch (error: any) {
-      this.sharedService.errorLog(error.error);
     }
   }
 
-  async editPost(): Promise<void> {
+  loadPostData(postId: string): void {
+    this.postService.getPostById(postId).subscribe({
+      next: (post) => {
+        const formattedDate = new Date(post.publication_date)
+          .toISOString()
+          .split('T')[0];
+
+        this.postForm.patchValue({
+          title: post.title,
+          description: post.description,
+          publication_date: formattedDate,
+          categories: post.categories.map((category) => category.categoryId),
+        });
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
+  }
+
+  editPost(): void {
     if (this.postForm.invalid) {
       return;
     }
 
-    try {
-      const originalPost = await this.postService.getPostById(this.postId);
+    this.postService.getPostById(this.postId).subscribe({
+      next: (originalPost) => {
+        if (!originalPost) {
+          console.error('Post not found');
+          return;
+        }
 
-      if (!originalPost) {
-        console.error('Post not found');
-        return;
-      }
+        const formValues = this.postForm.value;
+        const updatedPost: PostDTO = {
+          ...originalPost,
+          title: formValues.title,
+          description: formValues.description,
+          publication_date: new Date(formValues.publication_date),
+          categories: formValues.categories.map((categoryId: string) => ({
+            categoryId,
+          })),
+        };
 
-      const formValues = this.postForm.value;
-      const updatedPost: PostDTO = {
-        ...originalPost,
-        title: formValues.title,
-        description: formValues.description,
-        publication_date: new Date(formValues.publication_date),
-        categories: formValues.categories.map((categoryId: string) => ({
-          categoryId,
-        })),
-      };
-
-      await this.postService.updatePost(this.postId, updatedPost);
-      this.sharedService.managementToast('Post updated successfully', true);
-      this.router.navigateByUrl('/posts');
-    } catch (error: any) {
-      this.sharedService.errorLog(error.error);
-    }
+        this.postService.updatePost(this.postId, updatedPost).subscribe({
+          next: () => {
+            this.sharedService.managementToast('Post updated successfully', true);
+            this.router.navigateByUrl('/posts');
+          },
+          error: (error) => {
+            this.sharedService.errorLog(error.error);
+          },
+        });
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 
-  async createPost(): Promise<void> {
+  createPost(): void {
     if (this.postForm.invalid) {
       return;
     }
@@ -126,27 +138,38 @@ export class PostFormComponent implements OnInit {
       return;
     }
 
-    try {
-      const user = await this.userService.getUserById(user_id);
-      const userAlias = user.alias;
+    this.userService.getUserById(user_id).subscribe({
+      next: (user) => {
+        const userAlias = user.alias;
+        const formValues = this.postForm.value;
+        const post: PostDTO = {
+          title: formValues.title,
+          description: formValues.description,
+          userId: user_id,
+          publication_date: new Date(formValues.publication_date),
+          categories: formValues.categories.map((categoryId: string) => ({
+            categoryId,
+          })),
+          userAlias,
+          num_likes: 0,
+          num_dislikes: 0,
+          postId: '', // Asignar postId si es necesario
+        };
 
-      const formValues = this.postForm.value;
-      const post: any = {
-        title: formValues.title,
-        description: formValues.description,
-        userId: user_id,
-        publication_date: new Date(formValues.publication_date),
-        categories:
-          formValues.categories.map((categoryId: string) => ({ categoryId })) ||
-          [],
-      };
-
-      await this.postService.createPost(post);
-      this.sharedService.managementToast('Post created successfully', true);
-      this.router.navigateByUrl('/home');
-    } catch (error: any) {
-      this.sharedService.errorLog(error.error);
-    }
+        this.postService.createPost(post).subscribe({
+          next: () => {
+            this.sharedService.managementToast('Post created successfully', true);
+            this.router.navigateByUrl('/home');
+          },
+          error: (error) => {
+            this.sharedService.errorLog(error.error);
+          },
+        });
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 
   savePost(): void {
@@ -157,7 +180,7 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  async addCategory(): Promise<void> {
+  addCategory(): void {
     const newCategoryName = this.postForm.get('newCategoryName')?.value.trim();
     if (!newCategoryName) {
       return;
@@ -170,15 +193,15 @@ export class PostFormComponent implements OnInit {
     }
 
     const newCategory = new CategoryDTO(newCategoryName, '', '');
-    try {
-      const createdCategory = await this.categoryService.createCategory(
-        newCategory
-      );
-      this.categories.push(createdCategory);
-      this.postForm.get('newCategoryName')?.reset();
-      this.sharedService.managementToast('Category added successfully', true);
-    } catch (error: any) {
-      this.sharedService.errorLog(error.error);
-    }
+    this.categoryService.createCategory(newCategory).subscribe({
+      next: (createdCategory) => {
+        this.categories.push(createdCategory);
+        this.postForm.get('newCategoryName')?.reset();
+        this.sharedService.managementToast('Category added successfully', true);
+      },
+      error: (error) => {
+        this.sharedService.errorLog(error.error);
+      },
+    });
   }
 }
