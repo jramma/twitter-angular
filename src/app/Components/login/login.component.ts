@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   email: FormControl;
   password: FormControl;
   loginForm: FormGroup;
+  loginError: string | null = null;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -50,11 +51,19 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // Getters para asegurar el tipo FormControl
+  get emailControl(): FormControl {
+    return this.loginForm.get('email') as FormControl;
+  }
+
+  get passwordControl(): FormControl {
+    return this.loginForm.get('password') as FormControl;
+  }
+
   login(): void {
     let responseOK = false;
     let errorResponse: any;
 
-    // Crear objeto de login solo con email y password
     const loginData = {
       email: this.email.value,
       password: this.password.value,
@@ -64,36 +73,32 @@ export class LoginComponent implements OnInit {
       next: (authToken: AuthToken) => {
         responseOK = true;
 
-        // Guardar el token y el user_id en localStorage
         this.localStorageService.set('user_id', authToken.user_id);
         this.localStorageService.set('access_token', authToken.access_token);
 
-        // Actualizar el header para usuario autenticado
         const headerInfo: HeaderMenus = {
           showAuthSection: true,
           showNoAuthSection: false,
         };
         this.headerMenusService.headerManagement.next(headerInfo);
 
-        // Navegar a la página principal
         this.router.navigateByUrl('home');
       },
       error: (error) => {
         responseOK = false;
         errorResponse = error.error;
 
-        // Mostrar secciones de no autenticado en el header
         const headerInfo: HeaderMenus = {
           showAuthSection: false,
           showNoAuthSection: true,
         };
         this.headerMenusService.headerManagement.next(headerInfo);
 
-        // Registrar error
         this.sharedService.errorLog(error.error);
+
+        this.loginError = error.error?.message || 'Login failed. Try again.';
       },
       complete: async () => {
-        // Mostrar feedback del login
         await this.sharedService.managementToast(
           'loginFeedback',
           responseOK,

@@ -19,10 +19,12 @@ import { FormatDatePipe } from './Pipes/format-date.pipe';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { FeedbackMessageComponent } from './Shared/components/feedback-message/feedback-message.component';
+import { InputFieldComponent } from './Shared/components/input-field/input-field.component';
+import { ButtonComponent } from './Shared/components/button/button.component';
 
 @NgModule({
   declarations: [
-
     AppComponent,
     RegisterComponent,
     LoginComponent,
@@ -36,6 +38,9 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
     PostFormComponent,
     FormatDatePipe,
     DashboardComponent,
+    FeedbackMessageComponent,
+    InputFieldComponent,
+    ButtonComponent,
   ],
   imports: [
     FormsModule,
