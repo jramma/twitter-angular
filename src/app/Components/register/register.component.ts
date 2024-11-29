@@ -126,7 +126,7 @@ export class RegisterComponent implements OnInit {
 
     if (responseOK) {
       this.registerForm.reset();
-      this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
+      this.birth_date.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'es'));
       this.router.navigateByUrl('home');
     }
   }
