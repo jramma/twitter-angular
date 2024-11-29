@@ -22,6 +22,12 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { FeedbackMessageComponent } from './Shared/components/feedback-message/feedback-message.component';
 import { InputFieldComponent } from './Shared/components/input-field/input-field.component';
 import { ButtonComponent } from './Shared/components/button/button.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -43,6 +49,12 @@ import { ButtonComponent } from './Shared/components/button/button.component';
     ButtonComponent,
   ],
   imports: [
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    BrowserAnimationsModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,

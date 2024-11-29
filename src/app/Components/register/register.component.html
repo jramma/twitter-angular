@@ -1,79 +1,161 @@
-<section class="flex flex-col items-center p-6 bg-dark-gray min-h-screen">
-  <div class="w-full max-w-md mx-auto bg-dark-slight rounded-lg shadow-md p-6">
-    <div class="mb-4 text-center">
-      <h1 class="text-2xl font-bold text-white">Register</h1>
-      <p id="registerFeedback" class="text-red-500"></p>
+<section class="flex flex-col items-center p-6 min-h-screen bg-gray-50">
+  <div class="w-full max-w-lg mx-auto  rounded-lg shadow-lg p-8">
+    <div class="mb-6 text-center">
+      <h1 class="text-3xl font-semibold text-gray-800">Register</h1>
+      <p id="registerFeedback" class="text-red-500 mt-2"></p>
     </div>
-    <!-- TODO 18 -->
-    <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-4">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-400">Name</label>
-        <input id="name" formControlName="name" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('name')?.errors?.required">Name is required.</small>
-          <small *ngIf="registerForm.get('name')?.errors?.minlength">Name must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('name')?.errors?.maxlength">Name cannot be more than 25 characters long.</small>
-        </div>
-      </div>
 
-      <div>
-        <label for="surname_1" class="block text-sm font-medium text-gray-400">Surname 1</label>
-        <input id="surname_1" formControlName="surname_1" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('surname_1')?.invalid && registerForm.get('surname_1')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('surname_1')?.errors?.required">Surname 1 is required.</small>
-          <small *ngIf="registerForm.get('surname_1')?.errors?.minlength">Surname 1 must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('surname_1')?.errors?.maxlength">Surname 1 cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+    <form class="overflow-visible" [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-6">
+      <!-- Name -->
+      <mat-form-field class="overflow-visible" appearance="fill" class="w-full">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          id="name"
+          formControlName="name"
+          placeholder="Enter your name"
+        />
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="registerForm.get('name')?.hasError('required')"
+          >Name is required.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('name')?.hasError('minlength')"
+          >Name must be at least 5 characters long.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('name')?.hasError('maxlength')"
+          >Name cannot be more than 25 characters long.</mat-error
+        >
+      </mat-form-field>
 
-      <div>
-        <label for="surname_2" class="block text-sm font-medium text-gray-400">Surname 2</label>
-        <input id="surname_2" formControlName="surname_2" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('surname_2')?.invalid && registerForm.get('surname_2')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('surname_2')?.errors?.minlength">Surname 2 must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('surname_2')?.errors?.maxlength">Surname 2 cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Surname 1 -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Surname 1</mat-label>
+        <input
+          matInput
+          id="surname_1"
+          formControlName="surname_1"
+          placeholder="Enter your first surname"
+        />
+        <mat-icon matSuffix>badge</mat-icon>
+        <mat-error *ngIf="registerForm.get('surname_1')?.hasError('required')"
+          >Surname 1 is required.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('surname_1')?.hasError('minlength')"
+          >Surname 1 must be at least 5 characters long.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('surname_1')?.hasError('maxlength')"
+          >Surname 1 cannot be more than 25 characters long.</mat-error
+        >
+      </mat-form-field>
 
-      <div>
-        <label for="alias" class="block text-sm font-medium text-gray-400">Alias</label>
-        <input id="alias" formControlName="alias" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('alias')?.invalid && registerForm.get('alias')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('alias')?.errors?.required">Alias is required.</small>
-          <small *ngIf="registerForm.get('alias')?.errors?.minlength">Alias must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('alias')?.errors?.maxlength">Alias cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Surname 2 -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Surname 2</mat-label>
+        <input
+          matInput
+          id="surname_2"
+          formControlName="surname_2"
+          placeholder="Enter your second surname"
+        />
+        <mat-icon matSuffix>badge</mat-icon>
+        <mat-error *ngIf="registerForm.get('surname_2')?.hasError('minlength')"
+          >Surname 2 must be at least 5 characters long.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('surname_2')?.hasError('maxlength')"
+          >Surname 2 cannot be more than 25 characters long.</mat-error
+        >
+      </mat-form-field>
 
-      <div>
-        <label for="birth_date" class="block text-sm font-medium text-gray-400">Birth Date</label>
-        <input id="birth_date" formControlName="birth_date" type="date" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('birth_date')?.invalid && registerForm.get('birth_date')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('birth_date')?.errors?.required">Birth Date is required.</small>
-          <small *ngIf="registerForm.get('birth_date')?.errors?.pattern">Birth Date must be in the format yyyy-mm-dd.</small>
-        </div>
-      </div>
+      <!-- Alias -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Alias</mat-label>
+        <input
+          matInput
+          id="alias"
+          formControlName="alias"
+          placeholder="Enter your alias"
+        />
+        <mat-icon matSuffix>alternate_email</mat-icon>
+        <mat-error *ngIf="registerForm.get('alias')?.hasError('required')"
+          >Alias is required.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('alias')?.hasError('minlength')"
+          >Alias must be at least 5 characters long.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('alias')?.hasError('maxlength')"
+          >Alias cannot be more than 25 characters long.</mat-error
+        >
+      </mat-form-field>
 
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-400">Email</label>
-        <input id="email" formControlName="email" type="email" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('email')?.errors?.required">Email is required.</small>
-          <small *ngIf="registerForm.get('email')?.errors?.email">Email must be a valid email address.</small>
-        </div>
-      </div>
+      <!-- Birth Date -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Birth Date</mat-label>
+        <input
+          matInput
+          id="birth_date"
+          formControlName="birth_date"
+          type="date"
+        />
+        <mat-icon matSuffix>calendar_today</mat-icon>
+        <mat-error *ngIf="registerForm.get('birth_date')?.hasError('required')"
+          >Birth Date is required.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('birth_date')?.hasError('pattern')"
+          >Birth Date must be in the format yyyy-mm-dd.</mat-error
+        >
+      </mat-form-field>
 
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-400">Password</label>
-        <input id="password" formControlName="password" type="password" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('password')?.errors?.required">Password is required.</small>
-          <small *ngIf="registerForm.get('password')?.errors?.minlength">Password must be at least 8 characters long.</small>
-          <small *ngIf="registerForm.get('password')?.errors?.maxlength">Password cannot be more than 16 characters long.</small>
-        </div>
-      </div>
+      <!-- Email -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          id="email"
+          formControlName="email"
+          type="email"
+          placeholder="Enter your email"
+        />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="registerForm.get('email')?.hasError('required')"
+          >Email is required.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('email')?.hasError('email')"
+          >Email must be a valid email address.</mat-error
+        >
+      </mat-form-field>
 
-      <button type="submit" [disabled]="registerForm.invalid" class="w-full py-2 px-4 bg-blue-400 text-white font-semibold rounded-md shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">Register</button>
+      <!-- Password -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Enter your password"
+        />
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('required')"
+          >Password is required.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')"
+          >Password must be at least 8 characters long.</mat-error
+        >
+        <mat-error *ngIf="registerForm.get('password')?.hasError('maxlength')"
+          >Password cannot be more than 16 characters long.</mat-error
+        >
+      </mat-form-field>
+
+      <!-- Submit Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="registerForm.invalid"
+        class="w-full py-2"
+      >
+        <mat-icon>how_to_reg</mat-icon> Register
+      </button>
     </form>
   </div>
 </section>

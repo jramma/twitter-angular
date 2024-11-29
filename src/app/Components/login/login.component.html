@@ -1,28 +1,51 @@
 <section class="container">
+  <!-- Mensaje de Error -->
   <div class="py-6 flex justify-center text-center">
-    <app-feedback-message [message]="loginError" *ngIf="loginError"></app-feedback-message>
+    <mat-error *ngIf="loginError">{{ loginError }}</mat-error>
   </div>
-  <div class="w-full max-w-md mx-auto bg-dark-slight rounded-lg shadow-md p-6">
-    <h1 class="text-2xl font-bold text-center text-white mb-4">Login</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-4">
-      <app-input-field
-        id="email"
-        label="Email"
-        type="email"
-        [control]="emailControl"
-      ></app-input-field>
 
-      <app-input-field
-        id="password"
-        label="Password"
-        type="password"
-        [control]="passwordControl"
-      ></app-input-field>
+  <!-- Card de Angular Material -->
+  <mat-card class="w-full max-w-md mx-auto">
+    <mat-card-header>
+      <mat-card-title class="text-center">Login</mat-card-title>
+    </mat-card-header>
 
-      <app-button
-        label="Login"
-        [disabled]="loginForm.invalid"
-      ></app-button>
-    </form>
-  </div>
+    <mat-card-content>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="login()"
+        class="space-y-4 flex flex-col gap-6"
+      >
+        <!-- Campo de Email -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error *ngIf="emailControl?.hasError('required')"
+            >Email es obligatorio</mat-error
+          >
+          <mat-error *ngIf="emailControl?.hasError('email')"
+            >Email no válido</mat-error
+          >
+        </mat-form-field>
+
+        <!-- Campo de Password -->
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="passwordControl?.hasError('required')"
+            >Password es obligatorio</mat-error
+          >
+        </mat-form-field>
+
+        <!-- Botón de Login -->
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="loginForm.invalid"
+        >
+          Login
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </section>

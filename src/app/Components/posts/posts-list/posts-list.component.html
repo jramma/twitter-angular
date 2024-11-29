@@ -1,22 +1,22 @@
-<div class="container mx-auto p-6 bg-dark-gray text-white">
-  <h2 class="text-2xl font-bold mb-4 text-white">Post List</h2>
+<div class="container mx-auto p-6   ">
+  <h2 class="text-2xl font-bold mb-4  ">Post List</h2>
 
   <button
     (click)="createPost()"
-    class="bg-blue-400 text-white px-4 py-2 rounded mb-4 hover:bg-blue-500 transition-colors"
+    class="bg-blue-400   px-4 py-2 rounded mb-4 hover:bg-blue-500 transition-colors"
   >
     ADD POST
   </button>
 
-  <table class="w-full bg-dark-slight border border-gray-600 rounded-md">
+  <table class="w-full  border border-gray-600 rounded-md">
     <thead>
       <tr class="bg-gray-700">
-        <th class="py-2 px-4 border-b border-gray-600 text-white">ID</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Title</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Description</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Likes</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Dislikes</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Actions</th>
+        <th class="py-2 px-4 border-b border-gray-600  ">ID</th>
+        <th class="py-2 px-4 border-b border-gray-600  ">Title</th>
+        <th class="py-2 px-4 border-b border-gray-600  ">Description</th>
+        <th class="py-2 px-4 border-b border-gray-600  ">Likes</th>
+        <th class="py-2 px-4 border-b border-gray-600  ">Dislikes</th>
+        <th class="py-2 px-4 border-b border-gray-600  ">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -30,14 +30,14 @@
           <button
           *ngIf="post.postId"
             (click)="updatePost(post.postId)"
-            class="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600 transition-colors"
+            class="bg-yellow-500   px-2 py-1 rounded mr-2 hover:bg-yellow-600 transition-colors"
           >
             UPDATE
           </button>
           <button
           *ngIf="post.postId"
             (click)="deletePost(post.postId)"
-            class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"
+            class="bg-red-500   px-2 py-1 rounded hover:bg-red-600 transition-colors"
           >
             DELETE
           </button>

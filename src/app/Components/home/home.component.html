@@ -1,4 +1,4 @@
-<section class="container mx-auto p-4 bg-dark-gray text-white">
+<section class="container mx-auto p-4   ">
   <!-- NO FUNCIONA BIEN -->
   <!-- Selector para elegir el formato de la fecha  -->
   <!-- <div class="mb-4">
@@ -6,7 +6,7 @@
     <select
       id="formatSelector"
       [(ngModel)]="selectedFormat"
-      class="p-2 bg-dark-slight border border-gray-600 rounded-md text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+      class="p-2  border border-gray-600 rounded-md   focus:outline-none focus:ring-blue-400 focus:border-blue-400"
     >
       <option value="1">Format 1</option>
       <option value="2">Format 2</option>
@@ -19,7 +19,7 @@
 
   <div
     *ngFor="let post of posts"
-    class="mb-6 p-4 border border-gray-600 rounded-md shadow-sm bg-dark-slight"
+    class="mb-6 p-4 border border-gray-600 rounded-md shadow-sm "
   >
     <h3 class="text-xl font-semibold text-blue-400">{{ post.title }}</h3>
     <p class="text-gray-400">{{ post.description }}</p>
@@ -30,23 +30,23 @@
       <span
         *ngFor="let category of post.categories"
         [ngStyle]="{ 'background-color': category.css_color }"
-        class="inline-block px-2 py-1 text-white rounded mr-2"
+        class="inline-block px-2 py-1   rounded mr-2"
       >
         {{ category.title }}
       </span>
     </div>
     <div *ngIf="showButtons" class="mt-4">
       <button
-      *ngIf="post.postId" 
+      *ngIf="post.postId"
         (click)="like(post.postId)"
-        class="bg-transparent border border-blue-400 text-blue-400 px-4 py-2 rounded mr-2 hover:bg-blue-400 hover:text-white transition-colors"
+        class="bg-transparent border border-blue-400 text-blue-400 px-4 py-2 rounded mr-2 hover:bg-blue-400 hover:  transition-colors"
       >
         Like
       </button>
       <button
       *ngIf="post.postId"
         (click)="dislike(post.postId)"
-        class="bg-transparent border border-red-400 text-red-400 px-4 py-2 rounded hover:bg-red-400 hover:text-white transition-colors"
+        class="bg-transparent border border-red-400 text-red-400 px-4 py-2 rounded hover:bg-red-400 hover:  transition-colors"
       >
         Dislike
       </button>

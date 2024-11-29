@@ -1,0 +1,17 @@
+<mat-form-field appearance="fill" class="w-full">
+  <mat-label>{{ label }}</mat-label>
+  <input matInput [type]="type" [formControl]="control" [placeholder]="label" />
+
+  <mat-error *ngIf="control.hasError('required')">
+    {{ label }} is required.
+  </mat-error>
+  <mat-error *ngIf="control.hasError('email')">
+    Please enter a valid email address.
+  </mat-error>
+  <mat-error *ngIf="control.hasError('minlength')">
+    Minimum {{ control.errors?.minlength?.requiredLength }} characters.
+  </mat-error>
+  <mat-error *ngIf="control.hasError('maxlength')">
+    Maximum {{ control.errors?.maxlength?.requiredLength }} characters.
+  </mat-error>
+</mat-form-field>
