@@ -5,7 +5,7 @@ export const selectAuthState = (state: any) => state.auth;
 
 export const selectUserId = createSelector(
   selectAuthState,
-  (state: AuthState) => state.credentials?.user_id
+  (state: AuthState) => state.credentials?.user_id ?? null
 );
 
 export const selectAccessToken = createSelector(

@@ -29,6 +29,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
+
+
+
+
+
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +56,8 @@ import {MatSelectModule} from '@angular/material/select';
     DashboardComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
+    MatTableModule,
     MatSelectModule,
     MatIconModule,
     MatDatepickerModule,

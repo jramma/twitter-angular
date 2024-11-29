@@ -20,7 +20,6 @@ export class CategoryService {
   }
 
   getCategoriesByUserId(userId: string): Observable<CategoryDTO[]> {
-    // Cambiamos Promise a Observable
     return this.http.get<CategoryDTO[]>(
       'http://localhost:3000/users/categories/' + userId
     );

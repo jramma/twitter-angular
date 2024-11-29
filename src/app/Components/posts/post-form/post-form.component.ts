@@ -36,6 +36,7 @@ export class PostFormComponent implements OnInit {
   ngOnInit(): void {
     // Obtener userId desde el estado de Redux
     this.store.select(selectUserId).subscribe((userId) => {
+      console.log('User ID:', userId);
       this.userId = userId;
       if (this.userId) {
         this.loadCategories();
