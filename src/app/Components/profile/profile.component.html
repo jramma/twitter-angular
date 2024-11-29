@@ -1,119 +1,173 @@
-<section class="flex flex-col items-center p-6 bg-dark-gray min-h-screen">
-  <div class="w-full max-w-md mx-auto bg-dark-slight rounded-lg shadow-md p-6">
-    <div class="mb-4 text-center">
-      <h1 class="text-2xl font-bold text-white">Profile</h1>
+<section class="flex flex-col items-center p-6 bg-gray-900 min-h-screen">
+  <div class="w-full max-w-md mx-auto bg-gray-800 rounded-lg shadow-lg p-6">
+    <!-- Header -->
+    <div class="mb-6 text-center border-b border-gray-700 pb-4">
+      <h1 class="text-2xl font-bold text-white">Edit Profile</h1>
       <p id="profileFeedback" class="text-red-500"></p>
     </div>
 
-    <form [formGroup]="profileForm" (ngSubmit)="updateUser()" class="space-y-4">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-400">Name</label>
-        <input
-          id="name"
-          formControlName="name"
-          type="text"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
-        />
-        <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('name')?.errors?.required">Name is required.</small>
-          <small *ngIf="profileForm.get('name')?.errors?.minlength">Name must be at least 5 characters long.</small>
-          <small *ngIf="profileForm.get('name')?.errors?.maxlength">Name cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+    <!-- Form -->
+    <form [formGroup]="profileForm" (ngSubmit)="updateUser()" class="space-y-6">
+      <!-- Name -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Name</mat-label>
+        <input matInput id="name" formControlName="name" />
+        <mat-error
+          *ngIf="
+            profileForm.get('name')?.invalid && profileForm.get('name')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('name')?.errors?.required"
+            >Name is required.</small
+          >
+          <small *ngIf="profileForm.get('name')?.errors?.minlength"
+            >Minimum 5 characters.</small
+          >
+          <small *ngIf="profileForm.get('name')?.errors?.maxlength"
+            >Maximum 25 characters.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="surname_1" class="block text-sm font-medium text-gray-400">First Surname</label>
-        <input
-          id="surname_1"
-          formControlName="surname_1"
-          type="text"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
-        />
-        <div *ngIf="profileForm.get('surname_1')?.invalid && profileForm.get('surname_1')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('surname_1')?.errors?.required">First Surname is required.</small>
-          <small *ngIf="profileForm.get('surname_1')?.errors?.minlength">First Surname must be at least 5 characters long.</small>
-          <small *ngIf="profileForm.get('surname_1')?.errors?.maxlength">First Surname cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- First Surname -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>First Surname</mat-label>
+        <input matInput id="surname_1" formControlName="surname_1" />
+        <mat-error
+          *ngIf="
+            profileForm.get('surname_1')?.invalid &&
+            profileForm.get('surname_1')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('surname_1')?.errors?.required"
+            >This field is required.</small
+          >
+          <small *ngIf="profileForm.get('surname_1')?.errors?.minlength"
+            >Minimum 5 characters.</small
+          >
+          <small *ngIf="profileForm.get('surname_1')?.errors?.maxlength"
+            >Maximum 25 characters.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="surname_2" class="block text-sm font-medium text-gray-400">Second Surname</label>
-        <input
-          id="surname_2"
-          formControlName="surname_2"
-          type="text"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
-        />
-        <div *ngIf="profileForm.get('surname_2')?.invalid && profileForm.get('surname_2')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('surname_2')?.errors?.minlength">Second Surname must be at least 5 characters long.</small>
-          <small *ngIf="profileForm.get('surname_2')?.errors?.maxlength">Second Surname cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Second Surname -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Second Surname</mat-label>
+        <input matInput id="surname_2" formControlName="surname_2" />
+        <mat-error
+          *ngIf="
+            profileForm.get('surname_2')?.invalid &&
+            profileForm.get('surname_2')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('surname_2')?.errors?.minlength"
+            >Minimum 5 characters.</small
+          >
+          <small *ngIf="profileForm.get('surname_2')?.errors?.maxlength"
+            >Maximum 25 characters.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="alias" class="block text-sm font-medium text-gray-400">Alias</label>
-        <input
-          id="alias"
-          formControlName="alias"
-          type="text"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
-        />
-        <div *ngIf="profileForm.get('alias')?.invalid && profileForm.get('alias')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('alias')?.errors?.required">Alias is required.</small>
-          <small *ngIf="profileForm.get('alias')?.errors?.minlength">Alias must be at least 5 characters long.</small>
-          <small *ngIf="profileForm.get('alias')?.errors?.maxlength">Alias cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Alias -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Alias</mat-label>
+        <input matInput id="alias" formControlName="alias" />
+        <mat-error
+          *ngIf="
+            profileForm.get('alias')?.invalid &&
+            profileForm.get('alias')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('alias')?.errors?.required"
+            >Alias is required.</small
+          >
+          <small *ngIf="profileForm.get('alias')?.errors?.minlength"
+            >Minimum 5 characters.</small
+          >
+          <small *ngIf="profileForm.get('alias')?.errors?.maxlength"
+            >Maximum 25 characters.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="birth_date" class="block text-sm font-medium text-gray-400">Birth Date</label>
+      <!-- Birth Date -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Birth Date</mat-label>
         <input
+          matInput
+          type="date"
           id="birth_date"
           formControlName="birth_date"
-          type="date"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
         />
-        <div *ngIf="profileForm.get('birth_date')?.invalid && profileForm.get('birth_date')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('birth_date')?.errors?.required">Birth Date is required.</small>
-          <small *ngIf="profileForm.get('birth_date')?.errors?.pattern">Birth Date must be in the format yyyy-mm-dd.</small>
-        </div>
-      </div>
+        <mat-error
+          *ngIf="
+            profileForm.get('birth_date')?.invalid &&
+            profileForm.get('birth_date')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('birth_date')?.errors?.required"
+            >Birth Date is required.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-400">Email</label>
-        <input
-          id="email"
-          formControlName="email"
-          type="email"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
-        />
-        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('email')?.errors?.required">Email is required.</small>
-          <small *ngIf="profileForm.get('email')?.errors?.email">Email must be a valid email address.</small>
-        </div>
-      </div>
+      <!-- Email -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="email" type="email" />
+        <mat-error
+          *ngIf="
+            profileForm.get('email')?.invalid &&
+            profileForm.get('email')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('email')?.errors?.required"
+            >Email is required.</small
+          >
+          <small *ngIf="profileForm.get('email')?.errors?.email"
+            >Must be a valid email.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-400">Password</label>
+      <!-- Password -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Password</mat-label>
         <input
+          matInput
           id="password"
           formControlName="password"
           type="password"
-          class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white"
         />
-        <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="profileForm.get('password')?.errors?.required">Password is required.</small>
-          <small *ngIf="profileForm.get('password')?.errors?.minlength">Password must be at least 8 characters long.</small>
-          <small *ngIf="profileForm.get('password')?.errors?.maxlength">Password cannot be more than 16 characters long.</small>
-        </div>
-      </div>
+        <mat-error
+          *ngIf="
+            profileForm.get('password')?.invalid &&
+            profileForm.get('password')?.touched
+          "
+        >
+          <small *ngIf="profileForm.get('password')?.errors?.required"
+            >Password is required.</small
+          >
+          <small *ngIf="profileForm.get('password')?.errors?.minlength"
+            >Minimum 8 characters.</small
+          >
+          <small *ngIf="profileForm.get('password')?.errors?.maxlength"
+            >Maximum 16 characters.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
+      <!-- Submit Button -->
       <button
+        mat-raised-button
+        color="primary"
         type="submit"
         [disabled]="profileForm.invalid"
-        class="w-full py-2 px-4 bg-blue-400 text-white font-semibold rounded-md shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+        class="w-full"
       >
-        Update Profile
+        Save Changes
       </button>
     </form>
   </div>
