@@ -12,11 +12,18 @@ export const selectAccessToken = createSelector(
   selectAuthState,
   (state: AuthState) => state.credentials?.access_token
 );
+
+export const selectAuthLoading = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.loading
+);
+
 export const selectShowAuthSection = createSelector(
   selectAuthState,
   (state: AuthState) => !!state.credentials?.user_id
 );
+
 export const selectShowNoAuthSection = createSelector(
   selectAuthState,
-  (state: AuthState) => !state.credentials?.user_id // Muestra la sección de no autenticado si no hay user_id
+  (state: AuthState) => !state.credentials?.user_id
 );

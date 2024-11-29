@@ -1,78 +1,85 @@
 <section class="container">
-  <div class="p-4">
-    <p id="categoryFeedback" class="text-red-500"></p>
-  </div>
-  <div class="p-4 bg-dark-slight shadow-md rounded-md">
-    <h1 class="text-2xl font-bold mb-4 text-white">Category Form</h1>
-    <form
-      *ngIf="categoryForm"
-      [formGroup]="categoryForm"
-      (ngSubmit)="saveCategory()"
-    >
-      <!-- Title -->
-      <mat-form-field appearance="fill" class="w-full mb-4">
-        <mat-label>Title</mat-label>
-        <input
-          matInput
-          id="title"
-          formControlName="title"
-          type="text"
-          class="text-white"
-        />
-        <mat-error *ngIf="title.errors">
-          <div *ngIf="title.errors.required">Title is required</div>
-          <div *ngIf="title.errors.maxlength">
-            Title can be max 55 characters long.
-          </div>
-        </mat-error>
-      </mat-form-field>
+  <ng-container *ngIf="isLoading; else formContent">
+    <div class="spinner-overlay">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-container>
 
-      <!-- Description -->
-      <mat-form-field appearance="fill" class="w-full mb-4">
-        <mat-label>Description</mat-label>
-        <input
-          matInput
-          id="description"
-          formControlName="description"
-          type="text"
-          class="text-white"
-        />
-        <mat-error *ngIf="description.errors">
-          <div *ngIf="description.errors.required">Description is required</div>
-          <div *ngIf="description.errors.maxlength">
-            Description can be max 255 characters long.
-          </div>
-        </mat-error>
-      </mat-form-field>
-
-      <!-- CSS Color -->
-      <mat-form-field appearance="fill" class="w-full mb-4">
-        <mat-label>CSS Color</mat-label>
-        <input
-          matInput
-          id="css_color"
-          formControlName="css_color"
-          type="text"
-          class="text-white"
-        />
-        <mat-error *ngIf="css_color.errors">
-          <div *ngIf="css_color.errors.required">CSS Color is required</div>
-          <div *ngIf="css_color.errors.maxlength">
-            CSS Color can be max 7 characters long.
-          </div>
-        </mat-error>
-      </mat-form-field>
-
-      <!-- Submit Button -->
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="categoryForm.invalid"
-        class="w-full"
+  <ng-template #formContent>
+    <div class="p-4 bg-dark-slight shadow-md rounded-md">
+      <h1 class="text-2xl font-bold mb-4 text-white">Category Form</h1>
+      <form
+        *ngIf="categoryForm"
+        [formGroup]="categoryForm"
+        (ngSubmit)="saveCategory()"
       >
-        SAVE
-      </button>
-    </form>
-  </div>
+        <!-- Title -->
+        <mat-form-field appearance="fill" class="w-full mb-4">
+          <mat-label>Title</mat-label>
+          <input
+            matInput
+            id="title"
+            formControlName="title"
+            type="text"
+            class="text-white"
+          />
+          <mat-error *ngIf="title.errors">
+            <div *ngIf="title.errors.required">Title is required</div>
+            <div *ngIf="title.errors.maxlength">
+              Title can be max 55 characters long.
+            </div>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="fill" class="w-full mb-4">
+          <mat-label>Description</mat-label>
+          <input
+            matInput
+            id="description"
+            formControlName="description"
+            type="text"
+            class="text-white"
+          />
+          <mat-error *ngIf="description.errors">
+            <div *ngIf="description.errors.required">
+              Description is required
+            </div>
+            <div *ngIf="description.errors.maxlength">
+              Description can be max 255 characters long.
+            </div>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- CSS Color -->
+        <mat-form-field appearance="fill" class="w-full mb-4">
+          <mat-label>CSS Color</mat-label>
+          <input
+            matInput
+            id="css_color"
+            formControlName="css_color"
+            type="text"
+            class="text-white"
+          />
+          <mat-error *ngIf="css_color.errors">
+            <div *ngIf="css_color.errors.required">CSS Color is required</div>
+            <div *ngIf="css_color.errors.maxlength">
+              CSS Color can be max 7 characters long.
+            </div>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Submit Button -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="categoryForm.invalid"
+          class="w-full"
+        >
+          SAVE
+        </button>
+      </form>
+    </div>
+  </ng-template>
 </section>

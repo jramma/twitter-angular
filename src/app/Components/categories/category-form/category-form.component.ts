@@ -26,6 +26,7 @@ export class CategoryFormComponent implements OnInit {
   categoryForm: UntypedFormGroup;
   isValidForm: boolean | null;
   userId: string | undefined | null = null;
+  isLoading: boolean = false; // Nueva variable para manejar el spinner
 
   private isUpdateMode: boolean;
   private validRequest: boolean;
@@ -68,65 +69,36 @@ export class CategoryFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let errorResponse: any;
-
-    // Obtener el userId desde el estado de Redux
     this.store.select(selectUserId).subscribe((userId) => {
       this.userId = userId;
     });
 
     if (this.categoryId) {
       this.isUpdateMode = true;
-      this.categoryService.getCategoryById(this.categoryId).subscribe({
-        next: (category) => {
-          this.category = category;
-          this.title.setValue(this.category.title);
-          this.description.setValue(this.category.description);
-          this.css_color.setValue(this.category.css_color);
-          this.categoryForm = this.formBuilder.group({
-            title: this.title,
-            description: this.description,
-            css_color: this.css_color,
-          });
-        },
-        error: (error) => {
-          errorResponse = error.error;
-          this.sharedService.errorLog(errorResponse);
-        },
-      });
+      this.loadCategoryDetails();
     }
   }
 
-  private editCategory(): void {
+  private loadCategoryDetails(): void {
     let errorResponse: any;
-    let responseOK = false;
 
-    if (this.userId && this.categoryId) {
-      this.category.userId = this.userId;
-      this.categoryService
-        .updateCategory(this.categoryId, this.category)
-        .subscribe({
-          next: () => {
-            responseOK = true;
-          },
-          error: (error) => {
-            errorResponse = error.error;
-            this.sharedService.errorLog(errorResponse);
-          },
-          complete: async () => {
-            await this.sharedService.managementToast(
-              'categoryFeedback',
-              responseOK,
-              errorResponse
-            );
-            if (responseOK) {
-              this.router.navigateByUrl('categories');
-            }
-          },
+    this.categoryService.getCategoryById(this.categoryId!).subscribe({
+      next: (category) => {
+        this.category = category;
+        this.title.setValue(this.category.title);
+        this.description.setValue(this.category.description);
+        this.css_color.setValue(this.category.css_color);
+        this.categoryForm = this.formBuilder.group({
+          title: this.title,
+          description: this.description,
+          css_color: this.css_color,
         });
-    } else {
-      console.error('User ID or Category ID is missing.');
-    }
+      },
+      error: (error) => {
+        errorResponse = error.error;
+        this.sharedService.errorLog(errorResponse);
+      },
+    });
   }
 
   private createCategory(): void {
@@ -134,7 +106,9 @@ export class CategoryFormComponent implements OnInit {
     let responseOK = false;
 
     if (this.userId) {
+      this.isLoading = true; // Activa el spinner
       this.category.userId = this.userId;
+
       this.categoryService.createCategory(this.category).subscribe({
         next: () => {
           responseOK = true;
@@ -144,6 +118,7 @@ export class CategoryFormComponent implements OnInit {
           this.sharedService.errorLog(errorResponse);
         },
         complete: async () => {
+          this.isLoading = false; // Desactiva el spinner
           await this.sharedService.managementToast(
             'categoryFeedback',
             responseOK,
@@ -156,6 +131,41 @@ export class CategoryFormComponent implements OnInit {
       });
     } else {
       console.error('User ID is missing.');
+    }
+  }
+
+  private editCategory(): void {
+    let errorResponse: any;
+    let responseOK = false;
+
+    if (this.userId && this.categoryId) {
+      this.isLoading = true; // Activa el spinner
+      this.category.userId = this.userId;
+
+      this.categoryService
+        .updateCategory(this.categoryId, this.category)
+        .subscribe({
+          next: () => {
+            responseOK = true;
+          },
+          error: (error) => {
+            errorResponse = error.error;
+            this.sharedService.errorLog(errorResponse);
+          },
+          complete: async () => {
+            this.isLoading = false; // Desactiva el spinner
+            await this.sharedService.managementToast(
+              'categoryFeedback',
+              responseOK,
+              errorResponse
+            );
+            if (responseOK) {
+              this.router.navigateByUrl('categories');
+            }
+          },
+        });
+    } else {
+      console.error('User ID or Category ID is missing.');
     }
   }
 

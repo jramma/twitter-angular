@@ -10,7 +10,7 @@ export interface AuthState {
 
 export const initialAuthState: AuthState = {
   credentials: null,
-  loading: false,
+  loading: true,
   loaded: false,
   error: null,
 };

@@ -1,22 +1,5 @@
 <section class="container mx-auto p-4 bg-dark-gray text-white">
-  <!-- NO FUNCIONA BIEN -->
-  <!-- Selector para elegir el formato de la fecha  -->
-  <!-- <div class="mb-4">
-    <label for="formatSelector" class="block text-gray-400 mb-2">Select Date Format:</label>
-    <select
-      id="formatSelector"
-      [(ngModel)]="selectedFormat"
-      class="p-2 bg-dark-slight border border-gray-600 rounded-md text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
-    >
-      <option value="1">Format 1</option>
-      <option value="2">Format 2</option>
-      <option value="3">Format 3</option>
-      <option value="4">Format 4</option>
-    </select>
-  </div> -->
-
   <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-2">Posts</h2>
-
   <div
     *ngFor="let post of posts"
     class="mb-6 p-4 border border-gray-600 rounded-md shadow-sm bg-dark-slight"
@@ -37,7 +20,7 @@
     </div>
     <div *ngIf="showButtons" class="mt-4">
       <button
-      *ngIf="post.postId" 
+      *ngIf="post.postId"
         (click)="like(post.postId)"
         class="bg-transparent border border-blue-400 text-blue-400 px-4 py-2 rounded mr-2 hover:bg-blue-400 hover:text-white transition-colors"
       >

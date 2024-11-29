@@ -31,7 +31,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa este módulo
 
 
 
@@ -56,6 +56,7 @@ import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
     DashboardComponent,
   ],
   imports: [
+    MatProgressSpinnerModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatSelectModule,

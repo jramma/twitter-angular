@@ -10,7 +10,8 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { loginSuccess } from 'src/app/store/actions/auth.actions';
-
+import { Observable } from 'rxjs';
+import { selectAuthLoading } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
   email: FormControl;
   password: FormControl;
   loginForm: FormGroup;
+  loading$!: Observable<boolean>; // Observable para el spinner
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -42,7 +44,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loading$ = this.store.select(selectAuthLoading); // Obtener el estado de `loading`
+  }
 
   login(): void {
     let responseOK = false;
