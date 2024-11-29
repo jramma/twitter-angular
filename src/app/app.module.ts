@@ -36,7 +36,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MatCardModule } from '@angular/material/card';
 import { NgChartsModule } from 'ng2-charts';
-
+import { CardComponent } from './Shared/Components/card/card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +52,7 @@ import { NgChartsModule } from 'ng2-charts';
     PostFormComponent,
     FormatDatePipe,
     DashboardComponent,
+    CardComponent,
   ],
   imports: [
     NgChartsModule,

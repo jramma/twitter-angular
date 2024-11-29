@@ -1,55 +1,16 @@
 <section class="container mx-auto p-4">
   <h2 class="text-2xl font-bold mb-4">Posts</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <mat-card
-      *ngFor="let post of posts; let i = index"
-      class="mat-elevation-z8 post-card"
-      [@fadeInAnimation]="i"
+    <app-card
+      *ngFor="let post of posts"
+      [title]="post.title"
+      [publicationDate]="post.publication_date"
+      [description]="post.description"
+      [categories]="post.categories"
+      [numLikes]="post.num_likes"
+      [numDislikes]="post.num_dislikes"
+      [postId]="post.postId"
     >
-      <mat-card-header>
-        <mat-card-title>{{ post.title }}</mat-card-title>
-        <mat-card-subtitle>
-          Published on: {{ post.publication_date | date : "longDate" }}
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <p class="post-description">{{ post.description }}</p>
-        <div class="categories">
-          <span
-            *ngFor="let category of post.categories"
-            [ngStyle]="{ 'background-color': category.css_color }"
-            class="category-chip"
-          >
-            {{ category.title }}
-          </span>
-        </div>
-      </mat-card-content>
-
-      <mat-card-actions align="end">
-        <div class="likes-dislikes">
-          <span class="like-count">👍 {{ post.num_likes }}</span>
-          <span class="dislike-count">👎 {{ post.num_dislikes }}</span>
-        </div>
-        <div class="action-buttons">
-          <button
-            mat-stroked-button
-            color="primary"
-            *ngIf="post.postId"
-            (click)="like(post.postId)"
-          >
-            Like
-          </button>
-          <button
-            mat-stroked-button
-            color="warn"
-            *ngIf="post.postId"
-            (click)="dislike(post.postId)"
-          >
-            Dislike
-          </button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
+    </app-card>
   </div>
 </section>

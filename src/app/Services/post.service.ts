@@ -45,16 +45,16 @@ export class PostService {
 
   createPost(post: PostDTO): Observable<PostDTO> {
     console.log('Datos del post:', post);
-    if (!post.postId) {
-      delete post.postId;
-    }
 
     const token = localStorage.getItem('access_token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<PostDTO>(this.urlBlogUocApi, post, { headers });
+    // Crea un nuevo objeto excluyendo postId
+    const { postId, ...postWithoutId } = post;
+
+    return this.http.post<PostDTO>(this.urlBlogUocApi, postWithoutId, { headers });
   }
 
   updatePost(postId: string, post: PostDTO): Observable<PostDTO> {

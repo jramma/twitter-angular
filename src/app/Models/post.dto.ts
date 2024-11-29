@@ -1,7 +1,7 @@
 import { CategoryDTO } from './category.dto';
 
 export class PostDTO {
-  postId?: string;
+  postId!: string;
   title: string;
   description: string;
   num_likes: number;
