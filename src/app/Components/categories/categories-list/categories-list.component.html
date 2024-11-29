@@ -1,55 +1,71 @@
 <section class="container p-4">
   <h2 class="text-2xl font-bold mb-4 text-white">Categories List</h2>
   <button
+    mat-raised-button
+    color="primary"
     (click)="createCategory()"
-    class="mb-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+    class="mb-4"
   >
     ADD
   </button>
 
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-dark-slight border border-gray-600">
-      <thead>
-        <tr class="bg-gray-800 text-gray-400 uppercase text-sm leading-normal">
-          <th class="py-3 px-6 text-left">ID</th>
-          <th class="py-3 px-6 text-left">TITLE</th>
-          <th class="py-3 px-6 text-left">DESCRIPTION</th>
-          <th class="py-3 px-6 text-left">CSS COLOR</th>
-          <th class="py-3 px-6 text-left">ACTIONS</th>
-        </tr>
-      </thead>
-      <tbody class="text-gray-300 text-sm font-light">
-        <tr
-          *ngFor="let category of categories"
-          class="border-b border-gray-600 hover:bg-gray-700"
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        {{ category.categoryId }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+      <mat-cell *matCellDef="let category"> {{ category.title }} </mat-cell>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        {{ category.description }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- CSS Color Column -->
+    <ng-container matColumnDef="css_color">
+      <mat-header-cell *matHeaderCellDef> CSS COLOR </mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        <span
+          class="inline-block w-4 h-4 rounded-full"
+          [ngStyle]="{ 'background-color': category.css_color }"
+        ></span>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        <button
+          mat-icon-button
+          color="accent"
+          (click)="updateCategory(category.categoryId)"
         >
-          <td class="py-3 px-6 text-left whitespace-nowrap">
-            {{ category.categoryId }}
-          </td>
-          <td class="py-3 px-6 text-left">{{ category.title }}</td>
-          <td class="py-3 px-6 text-left">{{ category.description }}</td>
-          <td class="py-3 px-6 text-left">
-            <span
-              class="inline-block w-4 h-4 rounded-full"
-              [ngStyle]="{ 'background-color': category.css_color }"
-            ></span>
-          </td>
-          <td class="py-3 px-6 text-left">
-            <button
-              (click)="updateCategory(category.categoryId)"
-              class="bg-yellow-500 text-white px-2 py-1 rounded-md hover:bg-yellow-700 mr-2"
-            >
-              UPDATE
-            </button>
-            <button
-              (click)="deleteCategory(category.categoryId)"
-              class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-700"
-            >
-              DELETE
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteCategory(category.categoryId)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Header and Rows -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
 </section>

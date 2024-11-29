@@ -1,0 +1,81 @@
+.container {
+  background-color: #15202b; /* Fondo general oscuro */
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.post-card {
+  border-radius: 12px; /* Esquinas más suaves */
+  background-color: #192734; /* Fondo ligeramente más claro */
+  color: white;
+  padding: 1rem;
+
+  .mat-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1da1f2; /* Azul característico */
+  }
+
+  .mat-card-subtitle {
+    font-size: 0.875rem;
+    color: #8899a6; /* Gris claro para detalles */
+  }
+
+  .post-description {
+    margin: 1rem 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #e1e8ed; /* Texto más claro para destacar */
+  }
+
+  .categories {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .category-chip {
+      padding: 0.3rem 0.8rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: white;
+      text-transform: uppercase;
+    }
+  }
+
+  .mat-card-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .likes-dislikes {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+
+      .like-count {
+        color: #17bf63; /* Verde para likes */
+        font-weight: bold;
+      }
+
+      .dislike-count {
+        color: #e0245e; /* Rojo para dislikes */
+        font-weight: bold;
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        font-size: 0.875rem;
+        font-weight: bold;
+        border-radius: 20px; /* Botones más estilizados */
+      }
+    }
+  }
+}

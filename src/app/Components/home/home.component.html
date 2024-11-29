@@ -1,55 +1,16 @@
-<section class="container mx-auto p-4 bg-dark-gray text-white">
-  <!-- NO FUNCIONA BIEN -->
-  <!-- Selector para elegir el formato de la fecha  -->
-  <!-- <div class="mb-4">
-    <label for="formatSelector" class="block text-gray-400 mb-2">Select Date Format:</label>
-    <select
-      id="formatSelector"
-      [(ngModel)]="selectedFormat"
-      class="p-2 bg-dark-slight border border-gray-600 rounded-md text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+<section class="container mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4">Posts</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <app-card
+      *ngFor="let post of posts"
+      [title]="post.title"
+      [publicationDate]="post.publication_date"
+      [description]="post.description"
+      [categories]="post.categories"
+      [numLikes]="post.num_likes"
+      [numDislikes]="post.num_dislikes"
+      [postId]="post.postId"
     >
-      <option value="1">Format 1</option>
-      <option value="2">Format 2</option>
-      <option value="3">Format 3</option>
-      <option value="4">Format 4</option>
-    </select>
-  </div> -->
-
-  <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-2">Posts</h2>
-
-  <div
-    *ngFor="let post of posts"
-    class="mb-6 p-4 border border-gray-600 rounded-md shadow-sm bg-dark-slight"
-  >
-    <h3 class="text-xl font-semibold text-blue-400">{{ post.title }}</h3>
-    <p class="text-gray-400">{{ post.description }}</p>
-    <p class="text-gray-500 text-sm">
-      Published on: {{ post.publication_date | formatDate : selectedFormat }}
-    </p>
-    <div class="mt-2">
-      <span
-        *ngFor="let category of post.categories"
-        [ngStyle]="{ 'background-color': category.css_color }"
-        class="inline-block px-2 py-1 text-white rounded mr-2"
-      >
-        {{ category.title }}
-      </span>
-    </div>
-    <div *ngIf="showButtons" class="mt-4">
-      <button
-      *ngIf="post.postId" 
-        (click)="like(post.postId)"
-        class="bg-transparent border border-blue-400 text-blue-400 px-4 py-2 rounded mr-2 hover:bg-blue-400 hover:text-white transition-colors"
-      >
-        Like
-      </button>
-      <button
-      *ngIf="post.postId"
-        (click)="dislike(post.postId)"
-        class="bg-transparent border border-red-400 text-red-400 px-4 py-2 rounded hover:bg-red-400 hover:text-white transition-colors"
-      >
-        Dislike
-      </button>
-    </div>
+    </app-card>
   </div>
 </section>

@@ -1,0 +1,32 @@
+<mat-card class="mat-elevation-z8 post-card">
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+    <mat-card-subtitle>
+      Published on: {{ publicationDate | date : "longDate" }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="post-description">{{ description }}</p>
+    <div class="categories">
+      <span
+        *ngFor="let category of categories"
+        [ngStyle]="{ 'background-color': category.css_color }"
+        class="category-chip"
+      >
+        {{ category.title }}
+      </span>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <div class="likes-dislikes">
+      <span class="like-count">👍 {{ numLikes }}</span>
+      <span class="dislike-count">👎 {{ numDislikes }}</span>
+    </div>
+    <div class="action-buttons">
+      <button mat-stroked-button color="primary" (click)="like(postId)">Like</button>
+      <button mat-stroked-button color="warn" (click)="dislike(postId)">Dislike</button>
+    </div>
+  </mat-card-actions>
+</mat-card>

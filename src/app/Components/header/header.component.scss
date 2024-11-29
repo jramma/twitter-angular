@@ -1,0 +1,17 @@
+mat-toolbar {
+  background-color: #1e293b; /* Un fondo oscuro */
+  color: white;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  button {
+    margin-right: 0.5rem;
+  }
+}
+
+.flex-1 {
+  flex: 1;
+}

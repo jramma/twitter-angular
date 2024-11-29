@@ -1,48 +1,73 @@
-<div class="container mx-auto p-6 bg-dark-gray text-white">
-  <h2 class="text-2xl font-bold mb-4 text-white">Post List</h2>
-
-  <button
-    (click)="createPost()"
-    class="bg-blue-400 text-white px-4 py-2 rounded mb-4 hover:bg-blue-500 transition-colors"
-  >
-    ADD POST
+<div class="container">
+  <h1 class="text-2xl font-bold mb-4">Posts</h1>
+  <button mat-raised-button color="primary" (click)="createPost()">
+    Create Post
   </button>
 
-  <table class="w-full bg-dark-slight border border-gray-600 rounded-md">
-    <thead>
-      <tr class="bg-gray-700">
-        <th class="py-2 px-4 border-b border-gray-600 text-white">ID</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Title</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Description</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Likes</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Dislikes</th>
-        <th class="py-2 px-4 border-b border-gray-600 text-white">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let post of posts" class="hover:bg-gray-800 transition-colors">
-        <td class="py-2 px-4 border-b border-gray-600">{{ post.postId }}</td>
-        <td class="py-2 px-4 border-b border-gray-600">{{ post.title }}</td>
-        <td class="py-2 px-4 border-b border-gray-600">{{ post.description }}</td>
-        <td class="py-2 px-4 border-b border-gray-600">{{ post.num_likes }}</td>
-        <td class="py-2 px-4 border-b border-gray-600">{{ post.num_dislikes }}</td>
-        <td class="py-2 px-4 border-b border-gray-600">
-          <button
-          *ngIf="post.postId"
-            (click)="updatePost(post.postId)"
-            class="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600 transition-colors"
-          >
-            UPDATE
-          </button>
-          <button
-          *ngIf="post.postId"
-            (click)="deletePost(post.postId)"
-            class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"
-          >
-            DELETE
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-4">
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+      <mat-cell *matCellDef="let post"> {{ post.title }} </mat-cell>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+      <mat-cell *matCellDef="let post"> {{ post.description }} </mat-cell>
+    </ng-container>
+
+    <!-- Likes Column -->
+    <ng-container matColumnDef="num_likes">
+      <mat-header-cell *matHeaderCellDef> Likes </mat-header-cell>
+      <mat-cell *matCellDef="let post"> {{ post.num_likes }} </mat-cell>
+    </ng-container>
+
+    <!-- Dislikes Column -->
+    <ng-container matColumnDef="num_dislikes">
+      <mat-header-cell *matHeaderCellDef> Dislikes </mat-header-cell>
+      <mat-cell *matCellDef="let post"> {{ post.num_dislikes }} </mat-cell>
+    </ng-container>
+
+    <!-- Publication Date Column -->
+    <ng-container matColumnDef="publication_date">
+      <mat-header-cell *matHeaderCellDef> Publication Date </mat-header-cell>
+      <mat-cell *matCellDef="let post">
+        {{ post.publication_date | date: 'shortDate' }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Categories Column -->
+    <ng-container matColumnDef="categories">
+      <mat-header-cell *matHeaderCellDef> Categories </mat-header-cell>
+      <mat-cell *matCellDef="let post">
+        <ng-container *ngFor="let category of post.categories; let i = index">
+          {{ category.title }}<span *ngIf="i < post.categories.length - 1">, </span>
+        </ng-container>
+      </mat-cell>
+    </ng-container>
+
+    <!-- User Alias Column -->
+    <ng-container matColumnDef="userAlias">
+      <mat-header-cell *matHeaderCellDef> User Alias </mat-header-cell>
+      <mat-cell *matCellDef="let post"> {{ post.userAlias }} </mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let post">
+        <button mat-icon-button color="accent" (click)="updatePost(post.postId)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deletePost(post.postId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Header and Rows -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
 </div>

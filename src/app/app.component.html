@@ -1,4 +1,11 @@
-
 <app-header></app-header>
+
+<!-- Spinner -->
+<ng-container *ngIf="loading$ | async">
+  <div class="spinner-overlay">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-container>
+
 <router-outlet></router-outlet>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->

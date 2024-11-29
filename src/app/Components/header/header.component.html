@@ -1,68 +1,33 @@
-<nav class="pt-12 pb-6 bg-gray-900 border-b border-gray-700 shadow-md">
-  <div class="flex container justify-between items-center">
-    <!-- NO AUTH REQUIRED -->
-    <div *ngIf="showNoAuthSection" class="flex items-center space-x-4">
-      <button
-        (click)="home()"
-        class="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-      >
-        Home
-      </button>
-      <button
-        (click)="login()"
-        class="px-5 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
-      >
-        Login
-      </button>
-      <button
-        (click)="register()"
-        class="px-5 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors"
-      >
-        Register
-      </button>
-      <button
-        class="px-5 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors"
-        (click)="dashboard()"
-      >
-        Dashboard
-      </button>
-    </div>
-    <a href="/">
-      <img src="assets/icons/logo.svg" alt="Twitter" class="w-10 h-10" />
-    </a>
+<mat-toolbar color="secondary" class="shadow-md">
+  <!-- Logo -->
+  <a mat-button routerLink="/" class="flex items-center">
+    <img src="assets/icons/logo.svg" alt="Twitter" class="w-10 h-10" />
+  </a>
 
-    <!-- AUTH REQUIRED -->
-    <div *ngIf="showAuthSection" class="flex items-center space-x-4">
-      <button
-        (click)="home()"
-        class="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-      >
-        Home
-      </button>
-      <button
-        (click)="adminPosts()"
-        class="px-5 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
-      >
-        Admin posts
-      </button>
-      <button
-        (click)="adminCategories()"
-        class="px-5 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors"
-      >
-        Admin categories
-      </button>
-      <button
-        (click)="profile()"
-        class="px-5 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition-colors"
-      >
-        Profile
-      </button>
-      <button
-        (click)="logout()"
-        class="px-5 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-      >
-        Logout
-      </button>
-    </div>
-  </div>
-</nav>
+  <!-- Sección de navegación -->
+  <span class="flex-1"></span>
+  <ng-container *ngIf="showNoAuthSection">
+    <button mat-button (click)="navigateTo('home')">Home</button>
+    <button mat-raised-button color="accent" (click)="navigateTo('login')">
+      Login
+    </button>
+    <button mat-raised-button color="accent" (click)="navigateTo('register')">
+      Register
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="showAuthSection">
+    <button mat-button (click)="navigateTo('home')">Home</button>
+    <button mat-button (click)="navigateTo('posts')">Admin Posts</button>
+    <button mat-button (click)="navigateTo('categories')">
+      Admin Categories
+    </button>
+    <button mat-button (click)="navigateTo('dashboard')">
+      Dashboard
+    </button>
+    <button mat-raised-button color="accent" (click)="navigateTo('profile')">
+      Profile
+    </button>
+    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  </ng-container>
+</mat-toolbar>

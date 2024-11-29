@@ -1,38 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { CategoryService } from 'src/app/Services/category.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { SharedService } from 'src/app/Services/shared.service';
+import { Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-categories-list',
   templateUrl: './categories-list.component.html',
   styleUrls: ['./categories-list.component.scss'],
 })
-export class CategoriesListComponent {
-  categories!: CategoryDTO[];
+export class CategoriesListComponent implements OnInit {
+  categories: CategoryDTO[] = [];
+  displayedColumns: string[] = ['id', 'title', 'description', 'css_color', 'actions'];
+  dataSource = new MatTableDataSource<CategoryDTO>();
+  userId: string | undefined | null = null;
 
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private localStorageService: LocalStorageService,
-    private sharedService: SharedService
-  ) {
-    this.loadCategories();
+    private sharedService: SharedService,
+    private store: Store
+  ) {}
+
+  ngOnInit(): void {
+    this.store.select(selectUserId).subscribe((userId) => {
+      this.userId = userId;
+      if (this.userId) {
+        this.loadCategories();
+      }
+    });
   }
 
   private loadCategories(): void {
-    let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.categoryService.getCategoriesByUserId(userId).subscribe({
+    if (this.userId) {
+      this.categoryService.getCategoriesByUserId(this.userId).subscribe({
         next: (categories) => {
           this.categories = categories;
+          this.dataSource.data = categories; // Actualizar la tabla con los datos
         },
         error: (error) => {
-          errorResponse = error.error;
-          this.sharedService.errorLog(errorResponse);
+          this.sharedService.errorLog(error.error);
         },
       });
     }
@@ -47,20 +57,14 @@ export class CategoriesListComponent {
   }
 
   deleteCategory(categoryId: string): void {
-    let errorResponse: any;
-
-    // Mostrar popup de confirmación
-    const result = confirm('Confirm delete category with id: ' + categoryId + ' .');
-    if (result) {
+    const confirmation = confirm('Confirm delete category with id: ' + categoryId + '.');
+    if (confirmation) {
       this.categoryService.deleteCategory(categoryId).subscribe({
-        next: (rowsAffected) => {
-          if (rowsAffected.affected > 0) {
-            this.loadCategories(); // Recargar la lista de categorías
-          }
+        next: () => {
+          this.loadCategories(); // Recargar la lista de categorías tras eliminar
         },
         error: (error) => {
-          errorResponse = error.error;
-          this.sharedService.errorLog(errorResponse);
+          this.sharedService.errorLog(error.error);
         },
       });
     }

@@ -4,76 +4,186 @@
       <h1 class="text-2xl font-bold text-white">Register</h1>
       <p id="registerFeedback" class="text-red-500"></p>
     </div>
-    <!-- TODO 18 -->
     <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-4">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-400">Name</label>
-        <input id="name" formControlName="name" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('name')?.errors?.required">Name is required.</small>
-          <small *ngIf="registerForm.get('name')?.errors?.minlength">Name must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('name')?.errors?.maxlength">Name cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Name -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Name</mat-label>
+        <input matInput id="name" formControlName="name" type="text" />
+        <mat-error
+          *ngIf="
+            registerForm.get('name')?.invalid &&
+            registerForm.get('name')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('name')?.errors?.required"
+            >Name is required.</small
+          >
+          <small *ngIf="registerForm.get('name')?.errors?.minlength"
+            >Name must be at least 5 characters long.</small
+          >
+          <small *ngIf="registerForm.get('name')?.errors?.maxlength"
+            >Name cannot be more than 25 characters long.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="surname_1" class="block text-sm font-medium text-gray-400">Surname 1</label>
-        <input id="surname_1" formControlName="surname_1" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('surname_1')?.invalid && registerForm.get('surname_1')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('surname_1')?.errors?.required">Surname 1 is required.</small>
-          <small *ngIf="registerForm.get('surname_1')?.errors?.minlength">Surname 1 must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('surname_1')?.errors?.maxlength">Surname 1 cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Surname 1 -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Surname 1</mat-label>
+        <input
+          matInput
+          id="surname_1"
+          formControlName="surname_1"
+          type="text"
+        />
+        <mat-error
+          *ngIf="
+            registerForm.get('surname_1')?.invalid &&
+            registerForm.get('surname_1')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('surname_1')?.errors?.required"
+            >Surname 1 is required.</small
+          >
+          <small *ngIf="registerForm.get('surname_1')?.errors?.minlength"
+            >Surname 1 must be at least 5 characters long.</small
+          >
+          <small *ngIf="registerForm.get('surname_1')?.errors?.maxlength"
+            >Surname 1 cannot be more than 25 characters long.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="surname_2" class="block text-sm font-medium text-gray-400">Surname 2</label>
-        <input id="surname_2" formControlName="surname_2" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('surname_2')?.invalid && registerForm.get('surname_2')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('surname_2')?.errors?.minlength">Surname 2 must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('surname_2')?.errors?.maxlength">Surname 2 cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Surname 2 -->
+      <mat-form-field appearance="fill"  class="w-full">
+        <mat-label>Surname 2</mat-label>
+        <input
+          matInput
+          id="surname_2"
+          formControlName="surname_2"
+          type="text"
+        />
+        <mat-error
+          *ngIf="
+            registerForm.get('surname_2')?.invalid &&
+            registerForm.get('surname_2')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('surname_2')?.errors?.minlength"
+            >Surname 2 must be at least 5 characters long.</small
+          >
+          <small *ngIf="registerForm.get('surname_2')?.errors?.maxlength"
+            >Surname 2 cannot be more than 25 characters long.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="alias" class="block text-sm font-medium text-gray-400">Alias</label>
-        <input id="alias" formControlName="alias" type="text" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('alias')?.invalid && registerForm.get('alias')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('alias')?.errors?.required">Alias is required.</small>
-          <small *ngIf="registerForm.get('alias')?.errors?.minlength">Alias must be at least 5 characters long.</small>
-          <small *ngIf="registerForm.get('alias')?.errors?.maxlength">Alias cannot be more than 25 characters long.</small>
-        </div>
-      </div>
+      <!-- Alias -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Alias</mat-label>
+        <input matInput id="alias" formControlName="alias" type="text" />
+        <mat-error
+          *ngIf="
+            registerForm.get('alias')?.invalid &&
+            registerForm.get('alias')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('alias')?.errors?.required"
+            >Alias is required.</small
+          >
+          <small *ngIf="registerForm.get('alias')?.errors?.minlength"
+            >Alias must be at least 5 characters long.</small
+          >
+          <small *ngIf="registerForm.get('alias')?.errors?.maxlength"
+            >Alias cannot be more than 25 characters long.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="birth_date" class="block text-sm font-medium text-gray-400">Birth Date</label>
-        <input id="birth_date" formControlName="birth_date" type="date" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('birth_date')?.invalid && registerForm.get('birth_date')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('birth_date')?.errors?.required">Birth Date is required.</small>
-          <small *ngIf="registerForm.get('birth_date')?.errors?.pattern">Birth Date must be in the format yyyy-mm-dd.</small>
-        </div>
-      </div>
+      <!-- Birth Date -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Birth Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="birthDatePicker"
+          id="birth_date"
+          formControlName="birth_date"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="birthDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #birthDatePicker></mat-datepicker>
+        <mat-error
+          *ngIf="
+            registerForm.get('birth_date')?.invalid &&
+            registerForm.get('birth_date')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('birth_date')?.errors?.required"
+            >Birth Date is required.</small
+          >
+          <small *ngIf="registerForm.get('birth_date')?.errors?.pattern"
+            >Birth Date must be in the format yyyy-mm-dd.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-400">Email</label>
-        <input id="email" formControlName="email" type="email" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('email')?.errors?.required">Email is required.</small>
-          <small *ngIf="registerForm.get('email')?.errors?.email">Email must be a valid email address.</small>
-        </div>
-      </div>
+      <!-- Email -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="email" type="email" />
+        <mat-error
+          *ngIf="
+            registerForm.get('email')?.invalid &&
+            registerForm.get('email')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('email')?.errors?.required"
+            >Email is required.</small
+          >
+          <small *ngIf="registerForm.get('email')?.errors?.email"
+            >Email must be a valid email address.</small
+          >
+        </mat-error>
+      </mat-form-field>
 
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-400">Password</label>
-        <input id="password" formControlName="password" type="password" class="mt-1 block w-full px-3 py-2 bg-dark-slight border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm text-white" />
-        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
-          <small *ngIf="registerForm.get('password')?.errors?.required">Password is required.</small>
-          <small *ngIf="registerForm.get('password')?.errors?.minlength">Password must be at least 8 characters long.</small>
-          <small *ngIf="registerForm.get('password')?.errors?.maxlength">Password cannot be more than 16 characters long.</small>
-        </div>
-      </div>
-
-      <button type="submit" [disabled]="registerForm.invalid" class="w-full py-2 px-4 bg-blue-400 text-white font-semibold rounded-md shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">Register</button>
+      <!-- Password -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          id="password"
+          formControlName="password"
+          type="password"
+        />
+        <mat-error
+          *ngIf="
+            registerForm.get('password')?.invalid &&
+            registerForm.get('password')?.touched
+          "
+        >
+          <small *ngIf="registerForm.get('password')?.errors?.required"
+            >Password is required.</small
+          >
+          <small *ngIf="registerForm.get('password')?.errors?.minlength"
+            >Password must be at least 8 characters long.</small
+          >
+          <small *ngIf="registerForm.get('password')?.errors?.maxlength"
+            >Password cannot be more than 16 characters long.</small
+          >
+        </mat-error>
+      </mat-form-field>
+      <!-- Submit Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="registerForm.invalid"
+        class="w-full"
+      >
+        Register
+      </button>
     </form>
   </div>
 </section>

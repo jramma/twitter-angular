@@ -19,10 +19,26 @@ import { FormatDatePipe } from './Pipes/format-date.pipe';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { authReducer } from './store/reducers/auth.reducer';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa este módulo
+import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { MatCardModule } from '@angular/material/card';
+import { NgChartsModule } from 'ng2-charts';
+import { CardComponent } from './Shared/Components/card/card.component';
 @NgModule({
   declarations: [
-
     AppComponent,
     RegisterComponent,
     LoginComponent,
@@ -36,13 +52,30 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
     PostFormComponent,
     FormatDatePipe,
     DashboardComponent,
+    CardComponent,
   ],
   imports: [
+    NgChartsModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatSelectModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    StoreModule.forRoot({ auth: authReducer }), // Configurar el StoreModule con el reducer de autenticación
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
+    NgChartsModule, // Configurar DevTools
   ],
   providers: [
     {

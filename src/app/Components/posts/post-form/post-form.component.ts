@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/Services/category.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { PostService } from 'src/app/Services/post.service';
 import { SharedService } from 'src/app/Services/shared.service';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
 import { UserService } from 'src/app/Services/user.service';
+import { Store } from '@ngrx/store';
+import { selectUserId } from 'src/app/store/selectors/auth.selectors';
 
 @Component({
   selector: 'app-post-form',
@@ -19,6 +20,7 @@ export class PostFormComponent implements OnInit {
   categories: CategoryDTO[] = [];
   isEditMode = false;
   postId!: string;
+  userId: string | undefined | null = null;
 
   constructor(
     private userService: UserService,
@@ -27,11 +29,20 @@ export class PostFormComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sharedService: SharedService,
-    private localStorageService: LocalStorageService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
+    // Obtener userId desde el estado de Redux
+    this.store.select(selectUserId).subscribe((userId) => {
+      console.log('User ID:', userId);
+      this.userId = userId;
+      if (this.userId) {
+        this.loadCategories();
+      }
+    });
+
     this.postForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(55)]],
       description: ['', [Validators.required, Validators.maxLength(255)]],
@@ -40,10 +51,8 @@ export class PostFormComponent implements OnInit {
         [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)],
       ],
       categories: [[], Validators.required],
-      newCategoryName: [''], // Control para nueva categoría
+      newCategoryName: [''],
     });
-
-    this.loadCategories();
 
     this.activatedRoute.params.subscribe((params) => {
       if (params['id']) {
@@ -55,9 +64,8 @@ export class PostFormComponent implements OnInit {
   }
 
   loadCategories(): void {
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.categoryService.getCategoriesByUserId(userId).subscribe({
+    if (this.userId) {
+      this.categoryService.getCategoriesByUserId(this.userId).subscribe({
         next: (categories) => {
           this.categories = categories;
         },
@@ -113,7 +121,10 @@ export class PostFormComponent implements OnInit {
 
         this.postService.updatePost(this.postId, updatedPost).subscribe({
           next: () => {
-            this.sharedService.managementToast('Post updated successfully', true);
+            this.sharedService.managementToast(
+              'Post updated successfully',
+              true
+            );
             this.router.navigateByUrl('/posts');
           },
           error: (error) => {
@@ -128,24 +139,18 @@ export class PostFormComponent implements OnInit {
   }
 
   createPost(): void {
-    if (this.postForm.invalid) {
+    if (this.postForm.invalid || !this.userId) {
       return;
     }
 
-    const user_id = this.localStorageService.get('user_id');
-    if (!user_id) {
-      console.error('User ID not found');
-      return;
-    }
-
-    this.userService.getUserById(user_id).subscribe({
+    this.userService.getUserById(this.userId).subscribe({
       next: (user) => {
         const userAlias = user.alias;
         const formValues = this.postForm.value;
         const post: PostDTO = {
           title: formValues.title,
           description: formValues.description,
-          userId: user_id,
+          userId: this.userId ?? '',
           publication_date: new Date(formValues.publication_date),
           categories: formValues.categories.map((categoryId: string) => ({
             categoryId,
@@ -153,12 +158,15 @@ export class PostFormComponent implements OnInit {
           userAlias,
           num_likes: 0,
           num_dislikes: 0,
-          postId: '', // Asignar postId si es necesario
+          postId: '',
         };
 
         this.postService.createPost(post).subscribe({
           next: () => {
-            this.sharedService.managementToast('Post created successfully', true);
+            this.sharedService.managementToast(
+              'Post created successfully',
+              true
+            );
             this.router.navigateByUrl('/home');
           },
           error: (error) => {
@@ -182,13 +190,7 @@ export class PostFormComponent implements OnInit {
 
   addCategory(): void {
     const newCategoryName = this.postForm.get('newCategoryName')?.value.trim();
-    if (!newCategoryName) {
-      return;
-    }
-
-    const userId = this.localStorageService.get('user_id');
-    if (!userId) {
-      console.error('User not found');
+    if (!newCategoryName || !this.userId) {
       return;
     }
 

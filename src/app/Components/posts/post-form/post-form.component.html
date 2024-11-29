@@ -1,107 +1,101 @@
-<div class="mx-auto">
-  <p id="postFeedback" class="text-red-500"></p>
-</div>
 <section class="container mx-auto p-6 bg-dark-gray text-white max-w-96">
+  <div class="mx-auto">
+    <p id="postFeedback" class="text-red-500"></p>
+  </div>
   <form [formGroup]="postForm" (ngSubmit)="savePost()">
-    <div class="mb-4">
-      <label for="title" class="block text-gray-400">Title</label>
-      <input
-        id="title"
-        type="text"
-        formControlName="title"
-        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
-      />
-      <div
+    <!-- Title -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Title</mat-label>
+      <input matInput id="title" type="text" formControlName="title" />
+      <mat-error
         *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched"
-        class="text-red-500"
       >
-        <small *ngIf="postForm.get('title')?.errors?.required"
-          >Title is required.</small
-        >
-        <small *ngIf="postForm.get('title')?.errors?.maxlength"
-          >Title cannot exceed 55 characters.</small
-        >
-      </div>
-    </div>
+        <div *ngIf="postForm.get('title')?.errors?.required">
+          Title is required.
+        </div>
+        <div *ngIf="postForm.get('title')?.errors?.maxlength">
+          Title cannot exceed 55 characters.
+        </div>
+      </mat-error>
+    </mat-form-field>
 
-    <div class="mb-4">
-      <label for="description" class="block text-gray-400">Description</label>
+    <!-- Description -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Description</mat-label>
       <textarea
+        matInput
         id="description"
         formControlName="description"
-        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+        rows="4"
       ></textarea>
-      <div
+      <mat-error
         *ngIf="
           postForm.get('description')?.invalid &&
           postForm.get('description')?.touched
         "
-        class="text-red-500"
       >
-        <small *ngIf="postForm.get('description')?.errors?.required"
-          >Description is required.</small
-        >
-        <small *ngIf="postForm.get('description')?.errors?.maxlength"
-          >Description cannot exceed 255 characters.</small
-        >
-      </div>
-    </div>
+        <div *ngIf="postForm.get('description')?.errors?.required">
+          Description is required.
+        </div>
+        <div *ngIf="postForm.get('description')?.errors?.maxlength">
+          Description cannot exceed 255 characters.
+        </div>
+      </mat-error>
+    </mat-form-field>
 
-    <div class="mb-4">
-      <label for="publication_date" class="block text-gray-400">Publication Date</label>
+    <!-- Publication Date -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Publication Date</mat-label>
       <input
+        matInput
         id="publication_date"
         type="date"
         formControlName="publication_date"
-        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
       />
-      <div
+      <mat-error
         *ngIf="
           postForm.get('publication_date')?.invalid &&
           postForm.get('publication_date')?.touched
         "
-        class="text-red-500"
       >
-        <small *ngIf="postForm.get('publication_date')?.errors?.required"
-          >Publication date is required.</small
-        >
-        <small *ngIf="postForm.get('publication_date')?.errors?.pattern"
-          >Invalid date format. Use yyyy-mm-dd.</small
-        >
-      </div>
-    </div>
+        <div *ngIf="postForm.get('publication_date')?.errors?.required">
+          Publication date is required.
+        </div>
+        <div *ngIf="postForm.get('publication_date')?.errors?.pattern">
+          Invalid date format. Use yyyy-mm-dd.
+        </div>
+      </mat-error>
+    </mat-form-field>
 
-    <div class="mb-4">
-      <label for="categories" class="block text-gray-400">Categories</label>
-      <select
-        id="categories"
-        formControlName="categories"
-        multiple
-        class="mt-1 block w-full bg-dark-slight border border-gray-600 rounded-md shadow-sm text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400"
-      >
-        <option *ngFor="let category of categories" [value]="category.categoryId">
+    <!-- Categories -->
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Categories</mat-label>
+      <mat-select id="categories" formControlName="categories" multiple>
+        <mat-option
+          *ngFor="let category of categories"
+          [value]="category.categoryId"
+        >
           {{ category.title }}
-        </option>
-      </select>
-      <div
+        </mat-option>
+      </mat-select>
+      <mat-error
         *ngIf="
           postForm.get('categories')?.invalid &&
           postForm.get('categories')?.touched
         "
-        class="text-red-500"
       >
-        <small *ngIf="postForm.get('categories')?.errors?.required">
+        <div *ngIf="postForm.get('categories')?.errors?.required">
           At least one category is required.
-        </small>
-      </div>
-    </div>
+        </div>
+      </mat-error>
+    </mat-form-field>
 
-
-
+    <!-- Submit Button -->
     <div class="flex justify-end">
       <button
+        mat-raised-button
+        color="primary"
         type="submit"
-        class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500 transition-colors"
         [disabled]="postForm.invalid"
       >
         Save Post
