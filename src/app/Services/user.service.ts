@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserDTO } from '../Models/user.dto';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,10 @@ export class UserService {
     this.urlBlogUocApi = 'http://localhost:3000/' + this.controller;
   }
 
-  register(user: UserDTO): Observable<UserDTO> {
-    return this.http.post<UserDTO>(this.urlBlogUocApi, user);
+  register(user: UserDTO): Observable<HttpResponse<UserDTO>> {
+    return this.http.post<UserDTO>(this.urlBlogUocApi, user, {
+      observe: 'response',
+    });
   }
 
   updateUser(userId: string, user: UserDTO): Observable<UserDTO> {

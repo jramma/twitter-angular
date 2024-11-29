@@ -98,8 +98,16 @@ export class RegisterComponent implements OnInit {
     this.registerUser = this.registerForm.value;
 
     try {
-      await this.userService.register(this.registerUser);
-      responseOK = true;
+      const apiResponse = await this.userService
+        .register(this.registerUser)
+        .toPromise();
+
+      // Validar si el código de estado es 201
+      if (apiResponse.status === 201) {
+        responseOK = true;
+      } else {
+        throw new Error('Unexpected API response status');
+      }
     } catch (error: any) {
       responseOK = false;
       errorResponse = error.error;

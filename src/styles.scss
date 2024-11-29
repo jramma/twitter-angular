@@ -21,16 +21,12 @@ a {
   text-decoration: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @apply text-white; /* Encabezados en blanco para destacar en el fondo oscuro */
-}
-
 /* Ajuste global de botones para dar consistencia */
 button {
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors; /* Transiciones y anillos de foco */
+}
+
+html,
+body {
+  height: 100%;
 }
