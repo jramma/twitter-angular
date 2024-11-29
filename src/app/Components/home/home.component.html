@@ -1,38 +1,55 @@
-<section class="container mx-auto p-4 bg-dark-gray text-white">
-  <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-2">Posts</h2>
-  <div
-    *ngFor="let post of posts"
-    class="mb-6 p-4 border border-gray-600 rounded-md shadow-sm bg-dark-slight"
-  >
-    <h3 class="text-xl font-semibold text-blue-400">{{ post.title }}</h3>
-    <p class="text-gray-400">{{ post.description }}</p>
-    <p class="text-gray-500 text-sm">
-      Published on: {{ post.publication_date | formatDate : selectedFormat }}
-    </p>
-    <div class="mt-2">
-      <span
-        *ngFor="let category of post.categories"
-        [ngStyle]="{ 'background-color': category.css_color }"
-        class="inline-block px-2 py-1 text-white rounded mr-2"
-      >
-        {{ category.title }}
-      </span>
-    </div>
-    <div *ngIf="showButtons" class="mt-4">
-      <button
-      *ngIf="post.postId"
-        (click)="like(post.postId)"
-        class="bg-transparent border border-blue-400 text-blue-400 px-4 py-2 rounded mr-2 hover:bg-blue-400 hover:text-white transition-colors"
-      >
-        Like
-      </button>
-      <button
-      *ngIf="post.postId"
-        (click)="dislike(post.postId)"
-        class="bg-transparent border border-red-400 text-red-400 px-4 py-2 rounded hover:bg-red-400 hover:text-white transition-colors"
-      >
-        Dislike
-      </button>
-    </div>
+<section class="container mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4">Posts</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <mat-card
+      *ngFor="let post of posts; let i = index"
+      class="mat-elevation-z8 post-card"
+      [@fadeInAnimation]="i"
+    >
+      <mat-card-header>
+        <mat-card-title>{{ post.title }}</mat-card-title>
+        <mat-card-subtitle>
+          Published on: {{ post.publication_date | date : "longDate" }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="post-description">{{ post.description }}</p>
+        <div class="categories">
+          <span
+            *ngFor="let category of post.categories"
+            [ngStyle]="{ 'background-color': category.css_color }"
+            class="category-chip"
+          >
+            {{ category.title }}
+          </span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <div class="likes-dislikes">
+          <span class="like-count">👍 {{ post.num_likes }}</span>
+          <span class="dislike-count">👎 {{ post.num_dislikes }}</span>
+        </div>
+        <div class="action-buttons">
+          <button
+            mat-stroked-button
+            color="primary"
+            *ngIf="post.postId"
+            (click)="like(post.postId)"
+          >
+            Like
+          </button>
+          <button
+            mat-stroked-button
+            color="warn"
+            *ngIf="post.postId"
+            (click)="dislike(post.postId)"
+          >
+            Dislike
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </section>

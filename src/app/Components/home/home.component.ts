@@ -8,17 +8,44 @@ import {
   selectUserId,
   selectShowAuthSection,
 } from 'src/app/store/selectors/auth.selectors';
+import {
+  trigger,
+  style,
+  transition,
+  animate,
+  query,
+  stagger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('fadeInAnimation', [
+      transition('* => *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateY(20px)' }),
+            stagger(100, [
+              animate(
+                '0.3s ease-out',
+                style({ opacity: 1, transform: 'translateY(0)' })
+              ),
+            ]),
+          ],
+          { optional: true }
+        ),
+      ]),
+    ]),
+  ],
 })
 export class HomeComponent implements OnInit {
-  posts!: PostDTO[];
-  showButtons: boolean;
-  selectedFormat: number = 1;
-  userId: string | undefined | null = null;
+  posts!: PostDTO[]; // Lista de posts
+  showButtons: boolean; // Mostrar botones dependiendo de la autenticación
+  selectedFormat: number = 1; // Formato seleccionado (opcional)
+  userId: string | undefined | null = null; // Usuario autenticado
 
   constructor(
     private postService: PostService,
@@ -27,7 +54,7 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {
     this.showButtons = false;
-    this.loadPosts();
+    this.loadPosts(); // Cargar los posts al inicializar el componente
   }
 
   ngOnInit(): void {
@@ -56,7 +83,11 @@ export class HomeComponent implements OnInit {
   like(postId: string): void {
     this.postService.likePost(postId).subscribe({
       next: () => {
-        this.loadPosts(); // Recargar la lista de posts después de dar "like"
+        // Encuentra el post y actualiza el número de likes localmente
+        const post = this.posts.find((p) => p.postId === postId);
+        if (post) {
+          post.num_likes++;
+        }
       },
       error: (error) => {
         this.sharedService.errorLog(error.error);
@@ -67,7 +98,11 @@ export class HomeComponent implements OnInit {
   dislike(postId: string): void {
     this.postService.dislikePost(postId).subscribe({
       next: () => {
-        this.loadPosts(); // Recargar la lista de posts después de dar "dislike"
+        // Encuentra el post y actualiza el número de dislikes localmente
+        const post = this.posts.find((p) => p.postId === postId);
+        if (post) {
+          post.num_dislikes++;
+        }
       },
       error: (error) => {
         this.sharedService.errorLog(error.error);

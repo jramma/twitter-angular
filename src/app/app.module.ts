@@ -27,17 +27,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa este módulo
+import { MatToolbarModule } from '@angular/material/toolbar';
 
-
-
-
-
-
+import { MatCardModule } from '@angular/material/card';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -56,6 +54,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
     DashboardComponent,
   ],
   imports: [
+    NgChartsModule,
+    MatCardModule,
+    MatToolbarModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
     MatTableModule,
@@ -72,7 +73,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
     ReactiveFormsModule,
     HttpClientModule,
     StoreModule.forRoot({ auth: authReducer }), // Configurar el StoreModule con el reducer de autenticación
-    StoreDevtoolsModule.instrument({ maxAge: 25 }), // Configurar DevTools
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
+    NgChartsModule, // Configurar DevTools
   ],
   providers: [
     {
