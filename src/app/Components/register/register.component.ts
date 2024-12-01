@@ -20,6 +20,7 @@ import { logout } from 'src/app/store/actions/auth.actions';
 })
 export class RegisterComponent implements OnInit {
   registerUser: UserDTO;
+  isLoading: boolean = false;
 
   name: FormControl;
   surname_1: FormControl;
@@ -92,11 +93,13 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   async register(): Promise<void> {
+    this.isLoading = true;
     let responseOK: boolean = false;
     this.isValidForm = false;
     let errorResponse: any;
 
     if (this.registerForm.invalid) {
+      this.isLoading = false;
       return;
     }
 
@@ -118,10 +121,11 @@ export class RegisterComponent implements OnInit {
       responseOK = false;
       errorResponse = error.error;
 
-      // Despachar logout para restablecer el estado de autenticación en caso de error
       this.store.dispatch(logout());
 
       this.sharedService.errorLog(errorResponse);
+    } finally {
+      this.isLoading = false;
     }
 
     await this.sharedService.managementToast(
