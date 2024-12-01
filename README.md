@@ -1,16 +1,61 @@
-# PEC 2
+# PEC3 - UOC
 
-Sé que se propone un orden de carpetas /auth y meter ahí todo lo de esta pec pero en este proyecto se encuentra todo en /store y los models lo he dejado como estaba.
+Aplicación web desarrollada con Angular. A continuación, se detallan las instrucciones para configurar y ejecutar el proyecto:
 
-## EXCELS
+## Requisitos Previos
 
-Los excels los tienes en este mismo archivo son excel.pdf y excel.xlsx .
+- Node.js y npm instalados en su sistema.
+- Angular CLI versión 12.2.5 o superior.
 
-## Capturas de pantalla de redux
+## Instalación
 
-![Captura de pantalla1](img1.png)
-![Captura de pantalla2](img2.png)
-![Captura de pantalla2](img3.png)
+1. **Clonar el repositorio:**
 
+   ```bash
+   git clone https://github.com/jramma/twitter-angular.git
+   cd twitter-angular
+   ```
 
-Utilizo navegador brave y me puse un plugin para ver que estaba todo ok.
+2. **Instalar las dependencias:**
+
+   ```bash
+   npm install
+   ```
+
+## Servidor de Desarrollo
+
+Para iniciar el servidor de desarrollo, ejecute:
+
+```bash
+ng serve
+```
+
+Luego, abra su navegador y navegue a `http://localhost:4200/`. La aplicación se recargará automáticamente si realiza cambios en los archivos fuente.
+
+## Generación de Componentes
+
+Para generar un nuevo componente, utilice el siguiente comando:
+
+```bash
+ng generate component nombre-del-componente
+```
+
+También puede generar directivas, tuberías, servicios, clases, guardias, interfaces, enumeraciones o módulos utilizando el mismo comando con las opciones correspondientes.
+
+## Construcción del Proyecto
+
+Para construir el proyecto, ejecute:
+
+```bash
+ng build
+```
+
+Los artefactos de construcción se almacenarán en el directorio `dist/`. Para una construcción de producción, añada la bandera `--prod`.
+
+## Ayuda Adicional
+
+Para obtener más ayuda sobre Angular CLI, utilice `ng help` o consulte la [documentación oficial de Angular CLI](https://angular.io/cli).
+
+---
+
+_Nota:_ Este proyecto fue generado con Angular CLI versión 12.2.5.
