@@ -22,7 +22,7 @@ export class CategoryFormComponent implements OnInit {
   title: UntypedFormControl;
   description: UntypedFormControl;
   css_color: UntypedFormControl;
-
+  errorMessage: string | null = null;
   categoryForm: UntypedFormGroup;
   isValidForm: boolean | null;
   userId: string | undefined | null = null;
@@ -114,11 +114,20 @@ export class CategoryFormComponent implements OnInit {
           responseOK = true;
         },
         error: (error) => {
+          this.isLoading = false;
           errorResponse = error.error;
-          this.sharedService.errorLog(errorResponse);
+          if (error.status === 409) {
+            // Muestra un mensaje específico para conflicto
+            this.sharedService.managementToast(
+              'Esta categoría ya existe.',
+              false
+            );
+          } else {
+            this.sharedService.errorLog(errorResponse);
+          }
         },
         complete: async () => {
-          this.isLoading = false; // Desactiva el spinner
+          this.isLoading = false;
           await this.sharedService.managementToast(
             'categoryFeedback',
             responseOK,
@@ -150,7 +159,15 @@ export class CategoryFormComponent implements OnInit {
           },
           error: (error) => {
             errorResponse = error.error;
-            this.sharedService.errorLog(errorResponse);
+            if (error.status === 409) {
+              // Muestra un mensaje específico para conflicto
+              this.sharedService.managementToast(
+                'Esta categoría ya existe.',
+                false
+              );
+            } else {
+              this.sharedService.errorLog(errorResponse);
+            }
           },
           complete: async () => {
             this.isLoading = false; // Desactiva el spinner
@@ -170,19 +187,26 @@ export class CategoryFormComponent implements OnInit {
   }
 
   saveCategory(): void {
-    this.isValidForm = false;
+    if (this.categoryForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = null; // Resetea el mensaje de error
 
-    if (this.categoryForm.invalid) {
-      return;
-    }
-
-    this.isValidForm = true;
-    this.category = this.categoryForm.value;
-
-    if (this.isUpdateMode) {
-      this.editCategory();
-    } else {
-      this.createCategory();
+      this.categoryService.createCategory(this.categoryForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.router.navigate(['/categories']); // Redirige después de guardar
+        },
+        error: (error) => {
+          this.isLoading = false;
+          if (error.status === 409) {
+            // Error específico para categoría duplicada
+            this.errorMessage = 'This category already exists.';
+          } else {
+            // Error genérico
+            this.errorMessage = 'An unexpected error occurred. Please try again.';
+          }
+        },
+      });
     }
   }
 }

@@ -37,6 +37,29 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { NgChartsModule } from 'ng2-charts';
 import { CardComponent } from './Shared/Components/card/card.component';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+
+
+
+
+export const CUSTOM_DATE_FORMATS = {
+  parse: {
+    dateInput: 'yyyy-MM-dd',
+  },
+  display: {
+    dateInput: 'yyyy-MM-dd',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'yyyy-MM-dd',
+    monthYearA11yLabel: 'MMMM yyyy',
+  },
+};
+
+
+
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,6 +106,8 @@ import { CardComponent } from './Shared/Components/card/card.component';
       useClass: AuthInterceptorService,
       multi: true,
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
   bootstrap: [AppComponent],
 })

@@ -55,7 +55,7 @@
       </mat-form-field>
 
       <!-- Surname 2 -->
-      <mat-form-field appearance="fill"  class="w-full">
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label>Surname 2</mat-label>
         <input
           matInput
@@ -105,27 +105,19 @@
         <mat-label>Birth Date</mat-label>
         <input
           matInput
-          [matDatepicker]="birthDatePicker"
-          id="birth_date"
+          [matDatepicker]="picker"
           formControlName="birth_date"
+          placeholder="yyyy-MM-dd"
         />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="birthDatePicker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #birthDatePicker></mat-datepicker>
-        <mat-error
-          *ngIf="
-            registerForm.get('birth_date')?.invalid &&
-            registerForm.get('birth_date')?.touched
-          "
-        >
-          <small *ngIf="registerForm.get('birth_date')?.errors?.required"
-            >Birth Date is required.</small
-          >
-          <small *ngIf="registerForm.get('birth_date')?.errors?.pattern"
-            >Birth Date must be in the format yyyy-mm-dd.</small
-          >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="birth_date.invalid">
+          <span *ngIf="birth_date.hasError('required')">
+            Birth Date is required.
+          </span>
+          <span *ngIf="birth_date.hasError('pattern')">
+            Birth Date must be in the format yyyy-MM-dd.
+          </span>
         </mat-error>
       </mat-form-field>
 

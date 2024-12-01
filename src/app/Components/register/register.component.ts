@@ -65,6 +65,12 @@ export class RegisterComponent implements OnInit {
       Validators.required,
       Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
     ]);
+    this.birth_date.valueChanges.subscribe((value) => {
+      if (value instanceof Date) {
+        const formattedDate = formatDate(value, 'yyyy-MM-dd', 'en');
+        this.birth_date.setValue(formattedDate, { emitEvent: false });
+      }
+    });
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.password = new FormControl('', [
       Validators.required,
@@ -126,7 +132,7 @@ export class RegisterComponent implements OnInit {
 
     if (responseOK) {
       this.registerForm.reset();
-      this.birth_date.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'es'));
+      this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
       this.router.navigateByUrl('home');
     }
   }

@@ -69,6 +69,11 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Error Feedback -->
+        <div *ngIf="errorMessage" class="text-red-500 mb-4">
+          {{ errorMessage }}
+        </div>
+
         <!-- Submit Button -->
         <button
           mat-raised-button
